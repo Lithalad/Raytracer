@@ -7,7 +7,7 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-#define ROWS 4
+#define ROWS 3
 #define COLUMNS 4
 
 typedef double TestType;
@@ -84,14 +84,116 @@ namespace MathTest
 			m1 += m2;
 			Assert::AreEqual( m1, m3 );
 
+		}
+
+		TEST_METHOD(MatrixOperatorMinusEqualsTest)
+		{
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m2(oneValue);
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m3(oneValue);
 
 			for ( int i = 0; i < ROWS; i++)
 			{
 				for ( int j = 0; j < COLUMNS ; j++)
 				{
-					Assert::AreEqual( m1.Get( i, j ), m3.Get( i, j ) );
+					TestType testValue1 = rand();
+					TestType testValue2 = rand();
+
+					m1.Set(i, j, testValue1 );
+					m2.Set(i, j, testValue2 );
+					m3.Set(i, j, testValue1 - testValue2);
 				}
+
 			}
+
+			m1 -= m2;
+			Assert::AreEqual( m1, m3 );
+
+		}
+
+		TEST_METHOD(MatrixOperatorTimesEqualsTest)
+		{
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
+			raytracer::math::Matrix< TestType, COLUMNS, COLUMNS > m2(oneValue);
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m3(zeroValue);
+
+			for ( int i = 0; i < ROWS; i++)
+			{
+				for ( int j = 0; j < COLUMNS ; j++)
+				{
+					TestType testValue1 = rand();
+					TestType testValue2 = rand();
+
+					m1.Set(i, j, testValue1 );
+					m2.Set(i, j, testValue2 );
+				}
+
+			}
+
+			for ( int i = 0; i < ROWS; i++)
+			{
+				for ( int j = 0; j < COLUMNS ; j++)
+				{
+					for(int k = 0; k < COLUMNS ; k++)
+					{
+						m3.Set(i, j, m1.Get(i, k) * m2.Get(k, j) + m3.Get(i, j));
+					}
+				}
+
+			}
+
+			m1 *= m2;
+			Assert::AreEqual( m1, m3 );
+
+		}
+
+		TEST_METHOD(MatrixOperatorTimesSkalarEqualsTest)
+		{
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m2(oneValue);
+			TestType skalar = rand();
+
+
+			for ( int i = 0; i < ROWS; i++)
+			{
+				for ( int j = 0; j < COLUMNS ; j++)
+				{
+					TestType testValue = rand();
+					
+
+					m1.Set(i, j, testValue );
+					m2.Set(i,j, testValue * skalar);
+				}
+
+			}
+
+			m1 *= skalar;
+			Assert::AreEqual( m1, m2 );
+
+		}
+
+		TEST_METHOD(MatrixOperatorDivEqualsTest)
+		{
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m2(oneValue);
+			TestType skalar = rand();
+
+
+			for ( int i = 0; i < ROWS; i++)
+			{
+				for ( int j = 0; j < COLUMNS ; j++)
+				{
+					TestType testValue = rand();
+					
+
+					m1.Set(i, j, testValue );
+					m2.Set(i,j, testValue / skalar);
+				}
+
+			}
+
+			m1 /= skalar;
+			Assert::AreEqual( m1, m2 );
 
 		}
 
@@ -145,5 +247,76 @@ namespace MathTest
 			Assert::AreNotEqual( m2, m3 );
 		}
 
+		TEST_METHOD(MatrixGetTransposed)
+		{
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
+			raytracer::math::Matrix< TestType, COLUMNS, ROWS > m2(oneValue);
+
+			for ( int i = 0; i < ROWS; i++)
+			{
+				for ( int j = 0; j < COLUMNS ; j++)
+				{
+					TestType testValue = rand();
+					
+					m1.Set(i, j, testValue );
+					m2.Set(j, i, testValue );
+				
+				}
+			}
+
+			Assert::AreEqual( m1, m2.GetTransposed() );
+			Assert::AreEqual( m1.GetTransposed(), m2 );
+			Assert::AreEqual( m1, m1.GetTransposed().GetTransposed() );
+		}
+
+		TEST_METHOD(MatrixGetRow)
+		{
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
+			raytracer::math::Matrix< TestType, 1, COLUMNS > m2(oneValue);
+
+			for ( int i = 0; i < ROWS; i++)
+			{
+				for ( int j = 0; j < COLUMNS ; j++)
+				{
+					TestType testValue = rand();
+					
+					m1.Set(i, j, testValue );
+				}
+			}
+			
+			for( int row = 0; row < ROWS; row++)
+			{
+				m2 = m1.GetRow(row);
+				for( int i = 0; i < COLUMNS; i++)
+				{
+					Assert::AreEqual( m1.Get(row, i), m2.Get(0, i ));
+				}
+			}
+		}
+
+		TEST_METHOD(MatrixGetColumn)
+		{
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
+			raytracer::math::Matrix< TestType, ROWS, 1 > m2(oneValue);
+
+			for ( int i = 0; i < ROWS; i++)
+			{
+				for ( int j = 0; j < COLUMNS ; j++)
+				{
+					TestType testValue = rand();
+					
+					m1.Set(i, j, testValue );
+				}
+			}
+			
+			for( int column = 0; column < COLUMNS; column++)
+			{
+				m2 = m1.GetColumn(column);
+				for( int i = 0; i < ROWS; i++)
+				{
+					Assert::AreEqual( m1.Get(i, column), m2.Get(i, 0 ));
+				}
+			}
+		}
 	};
 }

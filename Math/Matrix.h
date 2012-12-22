@@ -79,6 +79,18 @@ namespace raytracer
 				return *this;
 			}
 
+			Matrix<T,ROWS,COLUMNS>& operator-= (const Matrix<T,ROWS,COLUMNS>& rhs)
+			{
+				for (unsigned int i = 0; i < ROWS ; i++ )
+				{
+					for (unsigned int j = 0; j < COLUMNS; j++ )
+					{
+						this->Set(i, j, this->Get(i, j) - rhs.Get(i,j));
+					}
+				}
+				return *this;
+			}
+
 			Matrix<T,ROWS,COLUMNS>& operator*= (const Matrix<T,COLUMNS,COLUMNS>& rhs)
 			{
 				Matrix <T,ROWS,COLUMNS> TempMatrix(0);
@@ -97,6 +109,72 @@ namespace raytracer
 				return *this;
 			}
 
+			Matrix<T,ROWS,COLUMNS>& operator*= (const T& rhs)
+			{
+				
+				for (unsigned int i = 0; i < ROWS ; i++ )
+				{
+					for (unsigned int j = 0; j < COLUMNS; j++ )
+					{
+						this->Set(i,j,this->Get(i,j) * rhs );
+					}
+				}
+
+				return *this;
+			}
+
+			Matrix<T,ROWS,COLUMNS>& operator/= (const T& rhs)
+			{
+				
+				for (unsigned int i = 0; i < ROWS ; i++ )
+				{
+					for (unsigned int j = 0; j < COLUMNS; j++ )
+					{
+						this->Set(i,j,this->Get(i,j) / rhs );
+					}
+				}
+
+				return *this;
+			}
+
+			Matrix<T,COLUMNS,ROWS> GetTransposed() const
+			{
+				Matrix <T,COLUMNS,ROWS> TempMatrix(0);
+
+				for(int i = 0; i < ROWS; i++)
+				{
+					for(int j = 0; j < COLUMNS; j++)
+					{
+						TempMatrix.Set(j, i, this->Get(i,j));
+					}
+				}
+
+				return TempMatrix;
+			}
+
+			Matrix<T,1,COLUMNS> GetRow( const unsigned int row) const
+			{
+				Matrix <T,1,COLUMNS> TempMatrix(0);
+
+				for(int i = 0; i < COLUMNS; i++)
+					{
+						TempMatrix.Set(0, i, this->Get(row,i));
+					}
+
+				return TempMatrix;
+			}
+
+			Matrix<T,ROWS,1> GetColumn( const unsigned int column) const
+			{
+				Matrix <T,ROWS,1> TempMatrix(0);
+
+				for(int i = 0; i < ROWS; i++)
+					{
+						TempMatrix.Set(i, 0, this->Get(i,column));
+					}
+
+				return TempMatrix;
+			}
 			
 			friend bool operator== <> (const Matrix<T,ROWS,COLUMNS>& lhs, const Matrix<T,ROWS,COLUMNS>& rhs);
 			friend bool operator!= <> (const Matrix<T,ROWS,COLUMNS>& lhs, const Matrix<T,ROWS,COLUMNS>& rhs);
