@@ -9,6 +9,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 #define ROWS 3
 #define COLUMNS 4
+#define COLUMNS2 5
 
 typedef double TestType;
 TestType zeroValue = 0.0;
@@ -86,6 +87,32 @@ namespace MathTest
 
 		}
 
+		TEST_METHOD(MatrixOperatorPlusTest)
+		{
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m2(oneValue);
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m3(oneValue);
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m4(oneValue);
+
+			for ( int i = 0; i < ROWS; i++)
+			{
+				for ( int j = 0; j < COLUMNS ; j++)
+				{
+					TestType testValue1 = rand();
+					TestType testValue2 = rand();
+
+					m1.Set(i, j, testValue1 );
+					m2.Set(i, j, testValue2 );
+					m3.Set(i, j, testValue1 + testValue2);
+				}
+
+			}
+
+			m4 = m1 + m2;
+			Assert::AreEqual( m4, m3 );
+
+		}
+
 		TEST_METHOD(MatrixOperatorMinusEqualsTest)
 		{
 			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
@@ -108,6 +135,32 @@ namespace MathTest
 
 			m1 -= m2;
 			Assert::AreEqual( m1, m3 );
+
+		}
+
+		TEST_METHOD(MatrixOperatorMinusTest)
+		{
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m2(oneValue);
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m3(oneValue);
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m4(oneValue);
+
+			for ( int i = 0; i < ROWS; i++)
+			{
+				for ( int j = 0; j < COLUMNS ; j++)
+				{
+					TestType testValue1 = rand();
+					TestType testValue2 = rand();
+
+					m1.Set(i, j, testValue1 );
+					m2.Set(i, j, testValue2 );
+					m3.Set(i, j, testValue1 - testValue2);
+				}
+
+			}
+
+			m4 = m1 - m2;
+			Assert::AreEqual( m4, m3 );
 
 		}
 
@@ -147,6 +200,43 @@ namespace MathTest
 
 		}
 
+		TEST_METHOD(OperatorMultiplicationTest)
+		{
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
+			raytracer::math::Matrix< TestType, COLUMNS, COLUMNS2 > m2(oneValue);
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS2 > m3(zeroValue);
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS2 > m4(zeroValue);
+
+			for ( int i = 0; i < ROWS; i++)
+			{
+				for ( int j = 0; j < COLUMNS ; j++)
+				{
+					TestType testValue1 = rand();
+					TestType testValue2 = rand();
+
+					m1.Set(i, j, testValue1 );
+					m2.Set(i, j, testValue2 );
+				}
+
+			}
+
+			for ( int i = 0; i < ROWS; i++)
+			{
+				for ( int j = 0; j < COLUMNS2 ; j++)
+				{
+					for(int k = 0; k < COLUMNS ; k++)
+					{
+						m3.Set(i, j, m1.Get(i, k) * m2.Get(k, j) + m3.Get(i, j));
+					}
+				}
+
+			}
+
+			m4 = m1 * m2;
+			Assert::AreEqual( m4, m3 );
+
+		}
+
 		TEST_METHOD(MatrixOperatorTimesSkalarEqualsTest)
 		{
 			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
@@ -169,6 +259,31 @@ namespace MathTest
 
 			m1 *= skalar;
 			Assert::AreEqual( m1, m2 );
+
+		}
+
+		TEST_METHOD(MatrixOperatorTimesSkalarTest)
+		{
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m2(oneValue);
+			TestType skalar = rand();
+
+
+			for ( int i = 0; i < ROWS; i++)
+			{
+				for ( int j = 0; j < COLUMNS ; j++)
+				{
+					TestType testValue = rand();
+					
+
+					m1.Set(i, j, testValue );
+					m2.Set(i,j, testValue * skalar);
+				}
+
+			}
+
+			Assert::AreEqual( m1 * skalar, m2 );
+			Assert::AreEqual( skalar * m1 , m2 );
 
 		}
 
@@ -294,6 +409,38 @@ namespace MathTest
 			}
 		}
 
+		TEST_METHOD(MatrixSetRow)
+		{
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
+			raytracer::math::Matrix< TestType, 1, COLUMNS > m2(oneValue);
+
+			
+			for ( int i = 0; i < ROWS; i++)
+			{
+				for ( int j = 0; j < COLUMNS ; j++)
+				{
+					TestType testValue = rand();
+					
+					m1.Set(i, j, testValue );
+				}
+			}
+			
+			for ( int j = 0; j < COLUMNS ; j++)
+			{
+				TestType testValue = rand();	
+				m2.Set(0, j, testValue );
+			}
+	
+			for( int row = 0; row < ROWS; row++)
+			{
+				Assert::AreNotEqual(m1.GetRow(row),m2);
+				m1.SetRow(row,m2);
+				Assert::AreEqual( m1.GetRow(row), m2);
+				
+			}
+			
+		}
+
 		TEST_METHOD(MatrixGetColumn)
 		{
 			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
@@ -317,6 +464,37 @@ namespace MathTest
 					Assert::AreEqual( m1.Get(i, column), m2.Get(i, 0 ));
 				}
 			}
+		}
+
+		TEST_METHOD(MatrixSetColumn)
+		{
+			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
+			raytracer::math::Matrix< TestType, ROWS, 1 > m2(oneValue);
+
+			for ( int i = 0; i < ROWS; i++)
+			{
+				for ( int j = 0; j < COLUMNS ; j++)
+				{
+					TestType testValue = rand();
+					
+					m1.Set(i, j, testValue );
+				}
+			}
+			
+			for ( int j = 0; j < ROWS ; j++)
+			{
+				TestType testValue = rand();	
+				m2.Set(j, 0, testValue );
+			}
+	
+			for( int column = 0; column < COLUMNS; column++)
+			{
+				Assert::AreNotEqual(m1.GetColumn(column), m2);
+				m1.SetColumn(column,m2);
+				Assert::AreEqual( m1.GetColumn(column), m2);
+				
+			}
+			
 		}
 	};
 }

@@ -12,9 +12,9 @@ namespace raytracer
 		bool operator==(const Matrix<T,ROWS,COLUMNS>& lhs, const Matrix<T,ROWS,COLUMNS>& rhs) 
 		{
 		
-			for(int i = 0;i < ROWS; i++)
+			for(unsigned int i = 0;i < ROWS; i++)
 			{
-				for(int j = 0 ; j <  COLUMNS; j++)
+				for(unsigned int j = 0 ; j <  COLUMNS; j++)
 				{
 					if( lhs.Get(i,j) != rhs.Get(i,j) )
 					{
@@ -30,6 +30,79 @@ namespace raytracer
 		bool operator!=(const Matrix<T,ROWS,COLUMNS>& lhs, const Matrix<T,ROWS,COLUMNS>& rhs) 
 		{
 			return !( rhs == lhs);
+		}
+
+		template< class T, unsigned int ROWS, unsigned int COLUMNS, unsigned int COLUMNS2 >
+		Matrix<T,ROWS,COLUMNS2> operator*(const Matrix<T,ROWS,COLUMNS>& lhs, const Matrix<T,COLUMNS,COLUMNS2>& rhs) 
+		{
+			Matrix<T,ROWS,COLUMNS2> tempMatrix(0);
+			for(unsigned int i = 0; i < ROWS; i++)
+			{
+				for(unsigned int j = 0; j < COLUMNS2; j++)
+				{
+					for( unsigned int k = 0; k < COLUMNS; k++)
+					{
+						tempMatrix.Set(i,j, tempMatrix.Get(i,j) + lhs.Get(i,k) * rhs.Get(k,j));
+					}
+				}
+			}
+			return tempMatrix;
+		}
+
+		template< class T, unsigned int ROWS, unsigned int COLUMNS >
+		Matrix<T,ROWS,COLUMNS> operator*(const Matrix<T,ROWS,COLUMNS>& lhs, const T& rhs) 
+		{
+			Matrix<T,ROWS,COLUMNS> tempMatrix(0);
+			for(unsigned int i = 0; i < ROWS; i++)
+			{
+				for(unsigned int j = 0; j < COLUMNS; j++)
+				{
+					tempMatrix.Set(i,j, lhs.Get(i,j) * rhs);
+				}
+			}
+			return tempMatrix;
+		}
+
+		template< class T, unsigned int ROWS, unsigned int COLUMNS >
+		Matrix<T,ROWS,COLUMNS> operator*(const T& lhs, const Matrix<T,ROWS,COLUMNS>& rhs) 
+		{
+			Matrix<T,ROWS,COLUMNS> tempMatrix(0);
+			for(unsigned int i = 0; i < ROWS; i++)
+			{
+				for(unsigned int j = 0; j < COLUMNS; j++)
+				{
+					tempMatrix.Set(i,j, lhs * rhs.Get(i,j));
+				}
+			}
+			return tempMatrix;
+		}
+
+		template< class T, unsigned int ROWS, unsigned int COLUMNS >
+		Matrix<T,ROWS,COLUMNS> operator+(const Matrix<T,ROWS,COLUMNS>& lhs, const Matrix<T,ROWS,COLUMNS>& rhs) 
+		{
+			Matrix<T,ROWS,COLUMNS> tempMatrix(0);
+			for(unsigned int i = 0; i < ROWS; i++)
+			{
+				for(unsigned int j = 0; j < COLUMNS; j++)
+				{
+					tempMatrix.Set(i,j, lhs.Get(i,j) + rhs.Get(i,j));
+				}
+			}
+			return tempMatrix;
+		}
+
+		template< class T, unsigned int ROWS, unsigned int COLUMNS >
+		Matrix<T,ROWS,COLUMNS> operator-(const Matrix<T,ROWS,COLUMNS>& lhs, const Matrix<T,ROWS,COLUMNS>& rhs) 
+		{
+			Matrix<T,ROWS,COLUMNS> tempMatrix(0);
+			for(unsigned int i = 0; i < ROWS; i++)
+			{
+				for(unsigned int j = 0; j < COLUMNS; j++)
+				{
+					tempMatrix.Set(i,j, lhs.Get(i,j) - rhs.Get(i,j));
+				}
+			}
+			return tempMatrix;
 		}
 
 		template< class T, unsigned int ROWS, unsigned int COLUMNS > class Matrix
@@ -164,6 +237,14 @@ namespace raytracer
 				return TempMatrix;
 			}
 
+			void SetRow( const unsigned int row, const Matrix<T,1,COLUMNS>& newRow)
+			{
+				for(int i = 0; i < COLUMNS; i++)
+					{
+						this->Set(row, i, newRow.Get(0,i));
+					}
+			}
+
 			Matrix<T,ROWS,1> GetColumn( const unsigned int column) const
 			{
 				Matrix <T,ROWS,1> TempMatrix(0);
@@ -174,6 +255,14 @@ namespace raytracer
 					}
 
 				return TempMatrix;
+			}
+
+			void SetColumn( const unsigned int column, const Matrix<T,ROWS,1>& newColumn)
+			{
+				for(int i = 0; i < ROWS; i++)
+					{
+						this->Set(i, column, newColumn.Get(i,0));
+					}
 			}
 			
 			friend bool operator== <> (const Matrix<T,ROWS,COLUMNS>& lhs, const Matrix<T,ROWS,COLUMNS>& rhs);
