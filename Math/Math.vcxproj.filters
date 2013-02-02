@@ -24,12 +24,24 @@
     <ClInclude Include="SquareMatrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RowVector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColumnVector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Matrix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SquareMatrix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RowVector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColumnVector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

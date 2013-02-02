@@ -74,11 +74,15 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ColumnVector.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="RowVector.h" />
     <ClInclude Include="SquareMatrix.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ColumnVector.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="RowVector.cpp" />
     <ClCompile Include="SquareMatrix.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

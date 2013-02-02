@@ -84,6 +84,23 @@ namespace MathTest
 			Assert::AreEqual( m1.GetDeterminant(), zeroValue);
 		}
 
+		TEST_METHOD(GetIverseTest)
+		{
+			raytracer::math::SquareMatrix< TestType, 4> m1(oneValue);
+			m1.Set(0,3,3);
+			m1.Set(1,3,2);
+			m1.Set(2,3,1);
+
+			m1 = m1.GetInverse();
+
+			Assert::AreEqual( m1.Get(0,3),-3.0); 
+			Assert::AreEqual( m1.Get(1,3),-2.0); 
+			Assert::AreEqual( m1.Get(2,3),-1.0); 
+			
+			
+			
+		}
+
 
 	};
 }

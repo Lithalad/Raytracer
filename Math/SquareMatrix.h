@@ -53,11 +53,11 @@ namespace raytracer
 					}
 				}
 
-				for(int i = 0, i < SIZE, i++)
+				for(int i = 0; i < SIZE; i++)
 				{
 					if( tempMatrix.Get(i,i) == 0)
 					{
-						for(int j = i+1, j < SIZE, j++)
+						for(int j = i+1; j < SIZE; j++)
 						{
 							if( tempMatrix.Get(j,i) != 0)
 							{
@@ -68,19 +68,48 @@ namespace raytracer
 							}
 						}
 					}
+
 					tempMatrix.SetRow(i,tempMatrix.GetRow(i) / tempMatrix.Get(i,i) );
-					for(int j = i+1, j < SIZE, j++)
+					for(int j = i+1; j < SIZE; j++)
 					{
 						if( tempMatrix.Get(j,i) != 0)
 						{
 							Matrix< T, 1,SIZE*2> tempMatrix2(0);
 							tempMatrix2 = tempMatrix.GetRow(i);
 							tempMatrix2 *= tempMatrix.Get( j, i );
-							// HIER WEITER
-							
+							tempMatrix.SetRow(j,tempMatrix.GetRow(j)-tempMatrix2);
 						}
 					}
 				}
+
+				for(int i = 1; i < SIZE; i++)
+				{
+					
+		
+					tempMatrix.SetRow(i,tempMatrix.GetRow(i) / tempMatrix.Get(i,i) );
+					for(int j = i-1; j >= 0; j--)
+					{
+						if( tempMatrix.Get(j,i) != 0)
+						{
+							Matrix< T, 1,SIZE*2> tempMatrix2(0);
+							tempMatrix2 = tempMatrix.GetRow(i);
+							tempMatrix2 *= tempMatrix.Get( j, i );
+							tempMatrix.SetRow(j,tempMatrix.GetRow(j)-tempMatrix2);
+						}
+					}
+				}
+
+				SquareMatrix< T, SIZE> inverseMatrix(0);
+
+				for(int i = 0; i < SIZE;i++)
+				{
+					for(int j = 0; j < SIZE;j++)
+					{
+						
+						inverseMatrix.Set(i,j,tempMatrix.Get(i,j+3));
+					}
+				}
+				return inverseMatrix;
 			}
 
 

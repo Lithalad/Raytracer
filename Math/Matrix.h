@@ -64,6 +64,20 @@ namespace raytracer
 		}
 
 		template< class T, unsigned int ROWS, unsigned int COLUMNS >
+		Matrix<T,ROWS,COLUMNS> operator/(const Matrix<T,ROWS,COLUMNS>& lhs, const T& rhs) 
+		{
+			Matrix<T,ROWS,COLUMNS> tempMatrix(0);
+			for(unsigned int i = 0; i < ROWS; i++)
+			{
+				for(unsigned int j = 0; j < COLUMNS; j++)
+				{
+					tempMatrix.Set(i,j, lhs.Get(i,j) / rhs);
+				}
+			}
+			return tempMatrix;
+		}
+
+		template< class T, unsigned int ROWS, unsigned int COLUMNS >
 		Matrix<T,ROWS,COLUMNS> operator*(const T& lhs, const Matrix<T,ROWS,COLUMNS>& rhs) 
 		{
 			Matrix<T,ROWS,COLUMNS> tempMatrix(0);
@@ -76,6 +90,8 @@ namespace raytracer
 			}
 			return tempMatrix;
 		}
+
+
 
 		template< class T, unsigned int ROWS, unsigned int COLUMNS >
 		Matrix<T,ROWS,COLUMNS> operator+(const Matrix<T,ROWS,COLUMNS>& lhs, const Matrix<T,ROWS,COLUMNS>& rhs) 
