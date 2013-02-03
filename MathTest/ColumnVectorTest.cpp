@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "../Math/RowVector.h"
+#include "../Math/ColumnVector.h"
 #include "CppUnitTest.h"
 #include <stdlib.h>
 #include <iostream>
@@ -21,11 +21,11 @@ namespace MathTest
 	{
 	public:
 		
-		TEST_METHOD(RowVectorGetMagnitudeTest)
+		TEST_METHOD(ColumnVectorGetMagnitudeTest)
 		{
 			TestType magnitudeTest = 0;
 			TestType magnitudeTest2 = 0;
-			raytracer::math::RowVector< TestType, SIZE> m;
+			raytracer::math::ColumnVector< TestType, SIZE> m;
 			srand( 100 );
 			for(int i = 0; i < SIZE; i++)
 			{
@@ -41,10 +41,10 @@ namespace MathTest
 		}
 
 
-		TEST_METHOD(RowVectorDotProducktTest)
+		TEST_METHOD(ColumnVectorDotProducktTest)
 		{
-			raytracer::math::RowVector< TestType, SIZE> m1;
-			raytracer::math::RowVector< TestType, SIZE> m2;
+			raytracer::math::ColumnVector< TestType, SIZE> m1;
+			raytracer::math::ColumnVector< TestType, SIZE> m2;
 		
 			TestType skalar = 0;
 			TestType skalar2 = 0;
@@ -64,11 +64,11 @@ namespace MathTest
 			Assert::AreEqual(skalar, skalar2);
 		}
 
-		TEST_METHOD(RowVectorCrossProducktTest)
+		TEST_METHOD(ColumnVectorCrossProducktTest)
 		{
-			raytracer::math::RowVector< TestType, SIZE> m1(1,2,3);
-			raytracer::math::RowVector< TestType, SIZE> m2(-7,8,9);
-			raytracer::math::RowVector< TestType, SIZE> m3(-6,-30,22);
+			raytracer::math::ColumnVector< TestType, SIZE> m1(1,2,3);
+			raytracer::math::ColumnVector< TestType, SIZE> m2(-7,8,9);
+			raytracer::math::ColumnVector< TestType, SIZE> m3(-6,-30,22);
 
 			
 			Assert::AreEqual(m1.cross(m2), m3);
