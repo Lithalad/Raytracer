@@ -200,7 +200,7 @@ namespace MathTest
 
 		}
 
-		TEST_METHOD(OperatorMultiplicationTest)
+		TEST_METHOD(MatrixOperatorMultiplicationTest)
 		{
 			raytracer::math::Matrix< TestType, ROWS, COLUMNS > m1(oneValue);
 			raytracer::math::Matrix< TestType, COLUMNS, COLUMNS2 > m2(oneValue);

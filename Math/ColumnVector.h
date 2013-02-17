@@ -7,6 +7,58 @@ namespace raytracer
 {
 	namespace math
 	{
+
+		template< class T, unsigned int SIZE> class ColumnVector;//	:	public Matrix<T, SIZE, 1>;
+
+		template< class T, unsigned int SIZE >
+		ColumnVector<T,SIZE> operator*(const T& lhs, const ColumnVector<T,SIZE>& rhs) 
+		{
+			ColumnVector<T,SIZE> tempMatrix;
+			for(unsigned int i = 0; i < SIZE; i++)
+			{
+				tempMatrix.Set(i, lhs * rhs.Get(i));
+			}
+
+			return tempMatrix;
+		}
+
+		template< class T, unsigned int SIZE>
+		ColumnVector<T,SIZE> operator*(const ColumnVector<T,SIZE>& lhs, const T& rhs) 
+		{
+			ColumnVector<T,SIZE> tempMatrix;
+			for(unsigned int i = 0; i < SIZE; i++)
+			{
+				tempMatrix.Set(i, lhs.Get(i) * rhs);
+			}
+
+			return tempMatrix;
+		}
+
+		
+		template< class T, unsigned int SIZE >
+		ColumnVector<T,SIZE> operator+(const ColumnVector<T,SIZE>& lhs, const ColumnVector<T,SIZE>& rhs) 
+		{
+			ColumnVector<T,SIZE> tempMatrix;
+			for(unsigned int i = 0; i < SIZE; i++)
+			{
+				tempMatrix.Set(i, lhs.Get(i) + rhs.Get(i));
+			}
+
+			return tempMatrix;
+		}
+
+		template< class T, unsigned int SIZE >
+		ColumnVector<T,SIZE> operator-(const ColumnVector<T,SIZE>& lhs, const ColumnVector<T,SIZE>& rhs) 
+		{
+			ColumnVector<T,SIZE> tempMatrix;
+			for(unsigned int i = 0; i < SIZE; i++)
+			{
+				tempMatrix.Set(i, lhs.Get(i) - rhs.Get(i));
+			}
+
+			return tempMatrix;
+		}
+
 		template< class T, unsigned int SIZE>
 		class ColumnVector	:	public Matrix<T, SIZE, 1>
 		{

@@ -18,6 +18,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RayTracer", "RayTracer\RayT
 		{5316E977-06E3-479C-90E1-13B0798C55E4} = {5316E977-06E3-479C-90E1-13B0798C55E4}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RayTracerTest", "RayTracerTest\RayTracerTest.vcxproj", "{6EC970EE-00AF-427E-9AB4-6E098297C9FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -40,6 +42,10 @@ Global
 		{864787BE-A11C-4B57-9398-BF38181A9812}.Debug|Win32.Build.0 = Debug|Win32
 		{864787BE-A11C-4B57-9398-BF38181A9812}.Release|Win32.ActiveCfg = Release|Win32
 		{864787BE-A11C-4B57-9398-BF38181A9812}.Release|Win32.Build.0 = Release|Win32
+		{6EC970EE-00AF-427E-9AB4-6E098297C9FA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{6EC970EE-00AF-427E-9AB4-6E098297C9FA}.Debug|Win32.Build.0 = Debug|Win32
+		{6EC970EE-00AF-427E-9AB4-6E098297C9FA}.Release|Win32.ActiveCfg = Release|Win32
+		{6EC970EE-00AF-427E-9AB4-6E098297C9FA}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
