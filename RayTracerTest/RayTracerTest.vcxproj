@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClolourTest.cpp" />
+    <ClCompile Include="PlaneTest.cpp" />
     <ClCompile Include="RayTest.cpp" />
     <ClCompile Include="ShadeRecordTest.cpp" />
     <ClCompile Include="stdafx.cpp">

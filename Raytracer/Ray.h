@@ -50,7 +50,7 @@ namespace raytracer
 	};
 
 	template< class T>
-	static std::wstring ToString(Ray<T>* t) 
+	static std::wstring ToString(const Ray<T>* t) 
 	{ RETURN_WIDE_STRING(""); }
 }
 

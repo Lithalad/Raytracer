@@ -11,7 +11,7 @@ namespace raytracer
 	{
 		private:
 			Geometry<T>* geometry;
-			Ray<T>* ray;
+			const Ray<T>* ray;
 			T t;
 			bool valid;
 
@@ -32,12 +32,12 @@ namespace raytracer
 				this->geometry = geometry;
 			}
 
-			Ray<T>* GetRay() 
+			const Ray<T>* GetRay() 
 			{
 				return ray;
 			}
 		
-			void SetRay (Ray<T>* ray)
+			void SetRay (const Ray<T>* ray)
 			{
 				this->ray = ray;
 			}

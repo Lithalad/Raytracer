@@ -1,8 +1,20 @@
 #ifndef __COLOUR_H
 #define __COLOUR_H
+#include <string>
 
 namespace raytracer
 {
+
+	template< class T> class Colour;
+
+	template< class T>
+	bool operator==(const Colour<T>& lhs, const Colour<T>& rhs) 
+	{
+		
+		return lhs.GetRed() == rhs.GetRed() && lhs.GetGreen() == rhs.GetGreen() && lhs.GetBlue() == rhs.GetBlue();
+		
+	}
+
 	template<class T>
 	class Colour
 	{
@@ -77,6 +89,10 @@ namespace raytracer
 		}
 
 	};
+
+	template< class T>
+	static std::wstring ToString(const Colour<T>& c) 
+	{ RETURN_WIDE_STRING(""); }
 }
 
 
