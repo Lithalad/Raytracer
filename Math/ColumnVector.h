@@ -10,8 +10,10 @@ namespace raytracer
 
 		template< class T, unsigned int SIZE> class ColumnVector;//	:	public Matrix<T, SIZE, 1>;
 
+	
+
 		template< class T, unsigned int SIZE >
-		ColumnVector<T,SIZE> operator*(const T& lhs, const ColumnVector<T,SIZE>& rhs) 
+		ColumnVector<T,SIZE> operator*(const T lhs, const ColumnVector<T,SIZE>& rhs) 
 		{
 			ColumnVector<T,SIZE> tempMatrix;
 			for(unsigned int i = 0; i < SIZE; i++)
@@ -23,12 +25,24 @@ namespace raytracer
 		}
 
 		template< class T, unsigned int SIZE>
-		ColumnVector<T,SIZE> operator*(const ColumnVector<T,SIZE>& lhs, const T& rhs) 
+		ColumnVector<T,SIZE> operator*(const ColumnVector<T,SIZE>& lhs, const T rhs) 
 		{
 			ColumnVector<T,SIZE> tempMatrix;
 			for(unsigned int i = 0; i < SIZE; i++)
 			{
 				tempMatrix.Set(i, lhs.Get(i) * rhs);
+			}
+
+			return tempMatrix;
+		}
+
+		template< class T, unsigned int SIZE>
+		ColumnVector<T,SIZE> operator/(const ColumnVector<T,SIZE>& lhs, const T& rhs) 
+		{
+			ColumnVector<T,SIZE> tempMatrix;
+			for(unsigned int i = 0; i < SIZE; i++)
+			{
+				tempMatrix.Set(i, lhs.Get(i) / rhs);
 			}
 
 			return tempMatrix;
@@ -79,7 +93,7 @@ namespace raytracer
 				this->Set(row,0,v);
 			}
 
-			T GetMagnitude(  ) const
+			T GetMagnitude() const
 			{
 				T magnitude = 0;
 				for( int i = 0; i < SIZE; i++)
@@ -103,7 +117,6 @@ namespace raytracer
 
 			
 		};
-
 
 		template < class T >
 		class ColumnVector< T, 3>	:	public Matrix<T, 3, 1>
