@@ -88,6 +88,8 @@
   <ItemGroup>
     <ClCompile Include="CameraTest.cpp" />
     <ClCompile Include="ClolourTest.cpp" />
+    <ClCompile Include="OrthographicCameraTest.cpp" />
+    <ClCompile Include="PerspectiveCameraTest.cpp" />
     <ClCompile Include="PlaneTest.cpp" />
     <ClCompile Include="RayTest.cpp" />
     <ClCompile Include="ShadeRecordTest.cpp" />

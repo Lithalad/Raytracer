@@ -32,8 +32,8 @@ namespace raytracer
 
 			virtual raytracer::Ray<T> RayFor(const unsigned int x, const unsigned int y)
 			{
-				raytracer::math::ColumnVector< TestType, 3> o( 0, 0, 0 );
-				raytracer::math::ColumnVector< TestType, 3> d( 0, 0, -1);
+				raytracer::math::ColumnVector< T, 3> o( 0, 0, 0 );
+				raytracer::math::ColumnVector< T, 3> d( 0, 0, -1);
 
 				//d = -w;
 
@@ -45,7 +45,7 @@ namespace raytracer
 					S * ((y - ((GetHeight() -1) / 2)) / (GetHeight() - 1)) * GetV();
 
 				
-				raytracer::Ray< TestType> testRay(o,d); 
+				raytracer::Ray< T> testRay(o,d); 
 
 				return testRay;
 			}

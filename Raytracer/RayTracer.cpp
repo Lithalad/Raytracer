@@ -3,6 +3,8 @@
 
 #include "stdafx.h"
 #include "RayTracer.h"
+#include "PerspectiveCamera.h"
+#include "Plane.h"
 
 #define MAX_LOADSTRING 100
 
@@ -100,7 +102,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    hInst = hInstance; // Store instance handle in our global variable
 
    hWnd = CreateWindow(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
+      CW_USEDEFAULT, 0, 640, 480, NULL, NULL, hInstance, NULL);
 
    if (!hWnd)
    {
@@ -148,9 +150,46 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		break;
 	case WM_PAINT:
-		hdc = BeginPaint(hWnd, &ps);
-		// TODO: Add any drawing code here...
-		EndPaint(hWnd, &ps);
+		{
+			hdc = BeginPaint(hWnd, &ps);
+			// TODO: Add any drawing code here...
+			RECT rcClient;
+			GetClientRect(hWnd, &rcClient);
+		
+			raytracer::math::ColumnVector< double, 3> e( 0, 1, 0);
+			raytracer::math::ColumnVector< double, 3> g( 0, 0, -1);
+			raytracer::math::ColumnVector< double, 3> t( 0, 1, 0);
+			double Angle = 3.1415 / 8.0;
+			unsigned int uiHeight = rcClient.bottom -rcClient.top;
+			unsigned int uiWidth = rcClient.right - rcClient.left;
+
+			raytracer::PerspectiveCamera<double> cam ( uiWidth,uiHeight,e,g,t,Angle);
+
+			raytracer::math::ColumnVector< double, 3> a( 0, 0, 0);
+			raytracer::math::ColumnVector< double, 3> n( 0, 1, 0);
+			raytracer::Colour<double> colour(0.0,1.0,0.0);
+
+			raytracer::Plane<double> plane(colour, a, n);
+
+			for ( int x = rcClient.left; x< rcClient.right; x++)
+			{
+				for ( int y = rcClient.top; y< rcClient.bottom; y++)
+				{
+					SetPixel(hdc,x,y,RGB(0,0,0));
+					raytracer::Ray<double> ray = cam.RayFor(x, uiHeight - y);
+
+					raytracer::ShadeRecord<double> shadeRecord;
+
+					plane.hit(ray, shadeRecord);
+					
+					if (shadeRecord.IsValid())
+					{
+						SetPixel(hdc,x,y,RGB(0,255,0));
+					}
+				}
+			}
+			EndPaint(hWnd, &ps);
+		}
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
