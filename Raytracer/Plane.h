@@ -38,7 +38,7 @@ namespace raytracer
 				n = nValue;
 			}
 
-			virtual void hit( const Ray< T >& ray, ShadeRecord<T>& shadeRecord )
+			virtual void hit( const Ray< T >& ray, ShadeRecord<T>& shadeRecord ) const
 			{
 				//t = ((a-o)*n)/(d*n);
 

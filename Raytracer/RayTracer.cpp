@@ -5,8 +5,33 @@
 #include "RayTracer.h"
 #include "PerspectiveCamera.h"
 #include "Plane.h"
+#include "World.h"
 
 #define MAX_LOADSTRING 100
+
+	COLORREF ConvertColour(raytracer::Colour<double> colour )
+	{
+		int r = (int)(colour.GetRed() *255);
+		int g = (int)(colour.GetGreen() *255);
+		int b = (int)(colour.GetBlue() *255);
+
+		if (r > 255)
+		{
+			r = 255;
+		}
+
+		if (g > 255)
+		{
+			g = 255;
+		}
+
+		if (b > 255)
+		{
+			b = 255;
+		}
+
+		return RGB(r,g,b);
+	}
 
 // Global Variables:
 HINSTANCE hInst;								// current instance
@@ -167,24 +192,33 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			raytracer::math::ColumnVector< double, 3> a( 0, 0, 0);
 			raytracer::math::ColumnVector< double, 3> n( 0, 1, 0);
-			raytracer::Colour<double> colour(0.0,1.0,0.0);
+			raytracer::Colour<double> colour(1.0,0.0,0.0);
+			raytracer::Colour<double> backgroundColour(0.3,0.3,0.3);
 
 			raytracer::Plane<double> plane(colour, a, n);
+
+			raytracer::World<double> world( backgroundColour);
+			world.addGeometry(plane);
 
 			for ( int x = rcClient.left; x< rcClient.right; x++)
 			{
 				for ( int y = rcClient.top; y< rcClient.bottom; y++)
 				{
-					SetPixel(hdc,x,y,RGB(0,0,0));
+					
 					raytracer::Ray<double> ray = cam.RayFor(x, uiHeight - y);
 
 					raytracer::ShadeRecord<double> shadeRecord;
 
-					plane.hit(ray, shadeRecord);
+					world.hit(ray, shadeRecord);
 					
 					if (shadeRecord.IsValid())
 					{
-						SetPixel(hdc,x,y,RGB(0,255,0));
+						SetPixel(hdc,x,y,ConvertColour(shadeRecord.GetGeomety()->GetColour()));
+					}
+
+					else
+					{
+						SetPixel(hdc,x,y,ConvertColour(world.GetBackgroundColour()));
 					}
 				}
 			}

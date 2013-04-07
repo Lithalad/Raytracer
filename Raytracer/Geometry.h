@@ -29,7 +29,7 @@ namespace raytracer
 				this->Colour = colour;
 			}
 
-			virtual void hit( const Ray< T >& ray, ShadeRecord<T>& shadeRecord ) = 0;
+			virtual void hit( const Ray< T >& ray, ShadeRecord<T>& shadeRecord ) const = 0;
 
 	};
 

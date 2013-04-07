@@ -10,7 +10,7 @@ namespace raytracer
 	class ShadeRecord
 	{
 		private:
-			Geometry<T>* geometry;
+			const Geometry<T>* geometry;
 			const Ray<T>* ray;
 			T t;
 			bool valid;
@@ -22,12 +22,12 @@ namespace raytracer
 				
 			}
 
-			Geometry<T>* GetGeomety() 
+			const Geometry<T>* GetGeomety() 
 			{
 				return geometry;
 			}
 		
-			void SetGeometry (Geometry<T>* geometry)
+			void SetGeometry ( const Geometry<T>* geometry)
 			{
 				this->geometry = geometry;
 			}
