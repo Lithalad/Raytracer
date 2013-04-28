@@ -5,6 +5,8 @@
 #include "RayTracer.h"
 #include "PerspectiveCamera.h"
 #include "Plane.h"
+#include "Triangle.h"
+#include "Sphere.h"
 #include "World.h"
 
 #define MAX_LOADSTRING 100
@@ -199,6 +201,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			raytracer::World<double> world( backgroundColour);
 			world.addGeometry(plane);
+
+			raytracer::Colour<double> colour2(1.0,1.0,0.0);
+			double r = 1;
+			raytracer::math::ColumnVector< double, 3> c( 0, 0, -3);
+			raytracer::Sphere<double> sphere(colour2, c, r);
+			//world.addGeometry(sphere);
+
+			raytracer::Colour<double> colour3(1.0,0.0,1.0);
+			raytracer::math::ColumnVector< double, 3> One( 0, 0, -3);
+			raytracer::math::ColumnVector< double, 3> Two( 0, 2, -3);
+			raytracer::math::ColumnVector< double, 3> Three( 1, 1, -3);
+
+			raytracer::Triangle<double> triangle ( colour3,One,Two,Three);
+			world.addGeometry(triangle);
+
+			
 
 			for ( int x = rcClient.left; x< rcClient.right; x++)
 			{

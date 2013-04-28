@@ -34,7 +34,7 @@ namespace raytracer
 	};
 
 	template< class T>
-	static std::wstring ToString(Geometry<T>* t) 
+	static std::wstring ToString(const Geometry<T>* t) 
 	{ RETURN_WIDE_STRING(""); }
 }
 

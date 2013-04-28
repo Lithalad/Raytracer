@@ -21,7 +21,7 @@ namespace RayTracerTest
 			raytracer::ShadeRecord<TestType> shadeRecord;
 			Assert::AreEqual(shadeRecord.IsValid(), false);
 			Assert::AreEqual(shadeRecord.GetT(), 0.0);
-			Assert::AreEqual(shadeRecord.GetGeomety(), (raytracer::Geometry<TestType>*)NULL);
+			Assert::AreEqual(shadeRecord.GetGeomety(), (const raytracer::Geometry<TestType>*)NULL);
 			Assert::AreEqual(shadeRecord.GetRay(), (const raytracer::Ray<TestType>*)NULL);
 		}
 
@@ -46,7 +46,7 @@ namespace RayTracerTest
 			raytracer::ShadeRecord<TestType> shadeRecord;
 			
 			shadeRecord.SetGeometry( (raytracer::Geometry<TestType>*)5);
-			Assert::AreEqual(shadeRecord.GetGeomety(),(raytracer::Geometry<TestType>*)5);
+			Assert::AreEqual(shadeRecord.GetGeomety(),(const raytracer::Geometry<TestType>*)5);
 		}
 
 		TEST_METHOD(ShadeRecordGetAndSetRayTest)
