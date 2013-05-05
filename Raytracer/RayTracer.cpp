@@ -7,6 +7,7 @@
 #include "Plane.h"
 #include "Triangle.h"
 #include "Sphere.h"
+#include "AxisAlignedBox.h"
 #include "World.h"
 
 #define MAX_LOADSTRING 100
@@ -216,6 +217,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			raytracer::Triangle<double> triangle ( colour3,One,Two,Three);
 			world.addGeometry(triangle);
 
+			raytracer::Colour<double> colour4(0.5, 0.5, 0.5);
+			raytracer::math::ColumnVector< double, 3> vectorA( -1, 0, -4);
+			raytracer::math::ColumnVector< double, 3> VectorB( 1, 2, -3);
+			raytracer::AxisAlignedBox<double> box (colour4, vectorA, VectorB);
+			world.addGeometry(box);
 			
 
 			for ( int x = rcClient.left; x< rcClient.right; x++)
