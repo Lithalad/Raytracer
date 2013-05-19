@@ -19,7 +19,7 @@ namespace raytracer
 
 		public:
 
-			Triangle(const Colour<T>& colour,const math::ColumnVector< T, 3>& a, const math::ColumnVector< T, 3>& b, const math::ColumnVector< T, 3>& c )	:	Geometry (colour), a (a), b (b), c (c)
+			Triangle(const Material<T>* mat,const math::ColumnVector< T, 3>& a, const math::ColumnVector< T, 3>& b, const math::ColumnVector< T, 3>& c )	:	Geometry (mat), a (a), b (b), c (c)
 			{
 				
 			}

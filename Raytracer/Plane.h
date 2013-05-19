@@ -13,7 +13,7 @@ namespace raytracer
 			math::ColumnVector< T, 3> n;
 		public:
 
-			Plane(const Colour<T>& colour,const math::ColumnVector< T, 3>& a, const math::ColumnVector< T, 3>& n)	:	Geometry (colour), a (a), n (n)
+			Plane(const Material<T>* mat,const math::ColumnVector< T, 3>& a, const math::ColumnVector< T, 3>& n)	:	Geometry (mat), a (a), n (n)
 			{
 				
 			}

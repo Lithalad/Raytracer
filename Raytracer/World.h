@@ -3,6 +3,7 @@
 #include "Colour.h"
 #include "Geometry.h"
 #include <vector>
+#include "Light.h"
 
 namespace raytracer
 {
@@ -12,11 +13,13 @@ namespace raytracer
 		private:
 
 			Colour<T> backgroundColour;
-			std::vector< const Geometry<T>* > geometries;  
+			Colour<T> ambientlight;
+			std::vector< const Geometry<T>* > geometries; 
+			std::vector< const Light<T>* > lights; 
 
 		public:
 
-			World ( const Colour<T>& bgColour) : backgroundColour (bgColour)
+			World ( const Colour<T>& bgColour, const Colour<T>& ambientlight) : backgroundColour (bgColour), ambientlight(ambientlight)
 			{
 			
 			}
@@ -35,6 +38,30 @@ namespace raytracer
 			{
 				geometries.push_back(&geo );
 			}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+			const Colour<T>& GetAmbientlight() const
+			{
+				return ambientlight;
+			}
+
+			void SetAmbientlight(const Colour<T>& aLight) 
+			{
+				ambientlight = aLight;
+			}
+
+			const std::vector< const Light<T>* >& Getlights() const
+			{
+				return lights;
+			}
+
+			void addLight( const Light<T>& light )
+			{
+				lights.push_back(&light );
+			}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 			void hit( const Ray< T >& ray, ShadeRecord<T>& shadeRecord ) const
 			{

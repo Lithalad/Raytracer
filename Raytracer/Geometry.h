@@ -3,6 +3,7 @@
 #include "Colour.h"
 #include "Ray.h"
 #include "ShadeRecord.h"
+#include "Material.h"
 
 
 namespace raytracer
@@ -11,22 +12,23 @@ namespace raytracer
 	class Geometry
 	{
 		private:
-			Colour< T > colour;
+
+			const Material<T>* mat;
 
 		public:
-			Geometry( const Colour<T>& colour) : colour (colour)
+			Geometry( const Material<T>* mat) : mat (mat)
 			{
 			
 			}
 
-			const Colour<T>& GetColour() const
+			const Material<T>* GetMaterial() const
 			{
-				return colour;
+				return mat;
 			}
 
-			void SetColour( const Colour<T>& colour )
+			void SetMaterial( const Material<T>* mat )
 			{
-				this->Colour = colour;
+				this->mat = mat;
 			}
 
 			virtual void hit( const Ray< T >& ray, ShadeRecord<T>& shadeRecord ) const = 0;

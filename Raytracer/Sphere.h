@@ -14,7 +14,7 @@ namespace raytracer
 
 		public:
 
-			Sphere(const Colour<T>& colour,const math::ColumnVector< T, 3>& c, const T& r)	:	Geometry (colour), r (r), c (c)
+			Sphere(const Material<T>* mat,const math::ColumnVector< T, 3>& c, const T& r)	:	Geometry (mat), r (r), c (c)
 			{
 				
 			}
@@ -64,12 +64,16 @@ namespace raytracer
 				{
 					T t = -b / (2 * a);
 
+
 					if ( t > 0 && (!shadeRecord.IsValid() || t < shadeRecord.GetT()))
 					{
+						auto n = (ray.At(t) - this->c) / ( (ray.At(t) - this->c).GetMagnitude());
+
 						shadeRecord.SetGeometry(this);
 						shadeRecord.SetRay(&ray);
 						shadeRecord.SetT(t);
 						shadeRecord.SetValid(true);
+						shadeRecord.SetN(n);
 					}
 				}
 
@@ -96,10 +100,14 @@ namespace raytracer
 
 					if ( t > 0 && (!shadeRecord.IsValid() || t < shadeRecord.GetT()))
 					{
+
+						auto n = (ray.At(t) - this->c) / ( (ray.At(t) - this->c).GetMagnitude());
+
 						shadeRecord.SetGeometry(this);
 						shadeRecord.SetRay(&ray);
 						shadeRecord.SetT(t);
 						shadeRecord.SetValid(true);
+						shadeRecord.SetN(n);
 					}
 				}
 			}

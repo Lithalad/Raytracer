@@ -9,6 +9,9 @@
 #include "Sphere.h"
 #include "AxisAlignedBox.h"
 #include "World.h"
+#include "SingleColourMaterial.h"
+#include "LambertMaterial.h"
+#include "PointLight.h"
 
 #define MAX_LOADSTRING 100
 
@@ -193,34 +196,46 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			raytracer::PerspectiveCamera<double> cam ( uiWidth,uiHeight,e,g,t,Angle);
 
+			raytracer::Colour<double> lightColour(1.0,1.0,1.0);
+			raytracer::PointLight<double> pLight (lightColour, e);
+			
+
 			raytracer::math::ColumnVector< double, 3> a( 0, 0, 0);
 			raytracer::math::ColumnVector< double, 3> n( 0, 1, 0);
 			raytracer::Colour<double> colour(1.0,0.0,0.0);
 			raytracer::Colour<double> backgroundColour(0.3,0.3,0.3);
+			raytracer::Colour<double> ambientlight(0.0,0.0,0.0);
+			raytracer::SingleColourMaterial<double> sgMat1(colour);
 
-			raytracer::Plane<double> plane(colour, a, n);
+			raytracer::Plane<double> plane(&sgMat1, a, n);
 
-			raytracer::World<double> world( backgroundColour);
+			raytracer::World<double> world( backgroundColour, ambientlight);
 			world.addGeometry(plane);
+			world.addLight(pLight);
 
 			raytracer::Colour<double> colour2(1.0,1.0,0.0);
+			raytracer::LambertMaterial<double> lm (colour2);
 			double r = 1;
 			raytracer::math::ColumnVector< double, 3> c( 0, 0, -3);
-			raytracer::Sphere<double> sphere(colour2, c, r);
-			//world.addGeometry(sphere);
+			raytracer::Sphere<double> sphere(&lm, c, r);
+			world.addGeometry(sphere);
 
 			raytracer::Colour<double> colour3(1.0,0.0,1.0);
+			raytracer::SingleColourMaterial<double> sgMat3(colour3);
 			raytracer::math::ColumnVector< double, 3> One( 0, 0, -3);
 			raytracer::math::ColumnVector< double, 3> Two( 0, 2, -3);
 			raytracer::math::ColumnVector< double, 3> Three( 1, 1, -3);
 
-			raytracer::Triangle<double> triangle ( colour3,One,Two,Three);
+
+
+			raytracer::Triangle<double> triangle ( &sgMat3,One,Two,Three);
 			world.addGeometry(triangle);
 
 			raytracer::Colour<double> colour4(0.5, 0.5, 0.5);
+			raytracer::SingleColourMaterial<double> sgMat4(colour4);
 			raytracer::math::ColumnVector< double, 3> vectorA( -1, 0, -4);
 			raytracer::math::ColumnVector< double, 3> VectorB( 1, 2, -3);
-			raytracer::AxisAlignedBox<double> box (colour4, vectorA, VectorB);
+			raytracer::AxisAlignedBox<double> box (&sgMat4, vectorA, VectorB);
 			world.addGeometry(box);
 			
 
@@ -237,7 +252,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					
 					if (shadeRecord.IsValid())
 					{
-						SetPixel(hdc,x,y,ConvertColour(shadeRecord.GetGeomety()->GetColour()));
+						SetPixel(hdc,x,y,ConvertColour(shadeRecord.GetGeomety()->GetMaterial()->ColourAt(shadeRecord, &world)));
 					}
 
 					else

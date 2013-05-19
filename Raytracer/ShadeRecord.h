@@ -10,6 +10,7 @@ namespace raytracer
 	class ShadeRecord
 	{
 		private:
+			math::ColumnVector<T,3> n;
 			const Geometry<T>* geometry;
 			const Ray<T>* ray;
 			T t;
@@ -32,7 +33,7 @@ namespace raytracer
 				this->geometry = geometry;
 			}
 
-			const Ray<T>* GetRay() 
+			const Ray<T>* GetRay()  const
 			{
 				return ray;
 			}
@@ -42,7 +43,7 @@ namespace raytracer
 				this->ray = ray;
 			}
 
-			const T& GetT() 
+			const T& GetT()  const
 			{
 				return t;
 			}
@@ -50,6 +51,16 @@ namespace raytracer
 			void SetT(const T& t)
 			{
 				this->t = t;
+			}
+
+			const math::ColumnVector< T, 3>& GetN() const
+			{
+				return n;
+			}
+
+			void SetN(const math::ColumnVector< T, 3>& nValue)
+			{
+				n = nValue;
 			}
 	
 			bool IsValid() const 

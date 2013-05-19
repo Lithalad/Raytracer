@@ -8,6 +8,23 @@ namespace raytracer
 	template< class T> class Colour;
 
 	template< class T>
+	Colour<T> operator*(const Colour<T>& lhs, const T rhs) 
+	{
+		Colour<T> colour(lhs.GetRed() * rhs, lhs.GetGreen() * rhs, lhs.GetBlue() * rhs);
+		
+		return colour;
+	}
+
+	template< class T>
+	Colour<T> operator*(const Colour<T>& lhs, const Colour<T>& rhs) 
+	{
+		Colour<T> colour(lhs.GetRed() * rhs.GetRed(), lhs.GetGreen() * rhs.GetGreen() , lhs.GetBlue() * rhs.GetBlue());
+		
+		return colour;
+	}
+
+
+	template< class T>
 	bool operator==(const Colour<T>& lhs, const Colour<T>& rhs) 
 	{
 		

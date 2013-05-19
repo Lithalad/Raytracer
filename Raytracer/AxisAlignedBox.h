@@ -24,13 +24,13 @@ namespace raytracer
 
 		public:
 
-			AxisAlignedBox(const Colour<T>& colour,const math::ColumnVector< T, 3>& a, const math::ColumnVector< T, 3>& b)	:	Geometry (colour), a (a), b (b), 
-				Left(colour, a, math::ColumnVector< T, 3>( -1, 0, 0) ), 
-				Right(colour, b, math::ColumnVector< T, 3>( 1, 0, 0) ), 
-				Top(colour, b, math::ColumnVector< T, 3>( 0, 1, 0) ), 
-				Bottom(colour, a, math::ColumnVector< T, 3>( 0, -1, 0) ), 
-				Near(colour, b, math::ColumnVector< T, 3>( 0, 0, 1) ), 
-				Far(colour, a, math::ColumnVector< T, 3>( 0, 0, -1) )
+			AxisAlignedBox(const Material<T>* mat,const math::ColumnVector< T, 3>& a, const math::ColumnVector< T, 3>& b)	:	Geometry (mat), a (a), b (b), 
+				Left(mat, a, math::ColumnVector< T, 3>( -1, 0, 0) ), 
+				Right(mat, b, math::ColumnVector< T, 3>( 1, 0, 0) ), 
+				Top(mat, b, math::ColumnVector< T, 3>( 0, 1, 0) ), 
+				Bottom(mat, a, math::ColumnVector< T, 3>( 0, -1, 0) ), 
+				Near(mat, b, math::ColumnVector< T, 3>( 0, 0, 1) ), 
+				Far(mat, a, math::ColumnVector< T, 3>( 0, 0, -1) )
 			{
 				
 			}
