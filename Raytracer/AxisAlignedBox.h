@@ -87,6 +87,8 @@ namespace raytracer
 				int size = visiblePlanes.size();
 
 				T biggestT = 0;
+				math::ColumnVector< T, 3> n;
+
 				for (std::vector< const Plane<T>*>::const_iterator it = visiblePlanes.cbegin(); it != visiblePlanes.cend(); ++it)
 				{
 					ShadeRecord<T> shade;
@@ -96,6 +98,7 @@ namespace raytracer
 					if( shade.GetT() > biggestT)
 					{
 						biggestT = shade.GetT();
+						n = (*it)->GetN();
 					}
 				}
 
@@ -109,6 +112,7 @@ namespace raytracer
 						 shadeRecord.SetRay(&ray);
 						 shadeRecord.SetT(biggestT);
 						 shadeRecord.SetValid(true);
+						 shadeRecord.SetN(n);
 					 }
 				}
 

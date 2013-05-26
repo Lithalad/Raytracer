@@ -15,11 +15,16 @@ namespace raytracer
 			math::ColumnVector< T, 3> a;
 			math::ColumnVector< T, 3> b;
 			math::ColumnVector< T, 3> c;
+
+			math::ColumnVector< T, 3> nA;
+			math::ColumnVector< T, 3> nB;
+			math::ColumnVector< T, 3> nC;
 			
 
 		public:
 
-			Triangle(const Material<T>* mat,const math::ColumnVector< T, 3>& a, const math::ColumnVector< T, 3>& b, const math::ColumnVector< T, 3>& c )	:	Geometry (mat), a (a), b (b), c (c)
+			Triangle(const Material<T>* mat,const math::ColumnVector< T, 3>& a, const math::ColumnVector< T, 3>& b, const math::ColumnVector< T, 3>& c,
+				const math::ColumnVector< T, 3>& nA, const math::ColumnVector< T, 3>& nB, const math::ColumnVector< T, 3>& nC )	:	Geometry (mat), a (a), b (b), c (c), nA (nA), nB (nB), nC ( nC)
 			{
 				
 			}
@@ -75,6 +80,8 @@ namespace raytracer
 				T beta = m1.GetDeterminant()/ m.GetDeterminant();
 				T gamma = m2.GetDeterminant()/ m.GetDeterminant();
 				T t = m3.GetDeterminant()/ m.GetDeterminant();
+				
+				T alpha = 1 - beta - gamma;
 
 				if( beta >= 0 && beta <= 1 && gamma >= 0 && gamma <= 1 && (beta + gamma) <= 1 && t > 0)
 				{
@@ -84,6 +91,7 @@ namespace raytracer
 						shadeRecord.SetRay(&ray);
 						shadeRecord.SetT(t);
 						shadeRecord.SetValid(true);
+						shadeRecord.SetN(alpha * nA + beta * nB + gamma * nC);
 					}
 				}
 				

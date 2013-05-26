@@ -11,7 +11,9 @@
 #include "World.h"
 #include "SingleColourMaterial.h"
 #include "LambertMaterial.h"
+#include "PhongMaterial.h"
 #include "PointLight.h"
+#include "SpotLight.h"
 
 #define MAX_LOADSTRING 100
 
@@ -187,8 +189,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			RECT rcClient;
 			GetClientRect(hWnd, &rcClient);
 		
-			raytracer::math::ColumnVector< double, 3> e( 0, 1, 0);
-			raytracer::math::ColumnVector< double, 3> g( 0, 0, -1);
+			raytracer::math::ColumnVector< double, 3> e( 8, 8, 8);
+			raytracer::math::ColumnVector< double, 3> g( -1, -1, -1);
 			raytracer::math::ColumnVector< double, 3> t( 0, 1, 0);
 			double Angle = 3.1415 / 8.0;
 			unsigned int uiHeight = rcClient.bottom -rcClient.top;
@@ -196,47 +198,57 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			raytracer::PerspectiveCamera<double> cam ( uiWidth,uiHeight,e,g,t,Angle);
 
-			raytracer::Colour<double> lightColour(1.0,1.0,1.0);
-			raytracer::PointLight<double> pLight (lightColour, e);
-			
 
+			raytracer::math::ColumnVector< double, 3> pl( 0, 10, 0);
+			raytracer::Colour<double> lightColour(1.0,1.0,1.0);
+			//raytracer::SpotLight<double> SpotLight(lightColour, e, g, 3.1415/16);
+			raytracer::PointLight<double> PointLight(lightColour, pl);
+
+		
 			raytracer::math::ColumnVector< double, 3> a( 0, 0, 0);
 			raytracer::math::ColumnVector< double, 3> n( 0, 1, 0);
 			raytracer::Colour<double> colour(1.0,0.0,0.0);
 			raytracer::Colour<double> backgroundColour(0.3,0.3,0.3);
 			raytracer::Colour<double> ambientlight(0.0,0.0,0.0);
-			raytracer::SingleColourMaterial<double> sgMat1(colour);
+			raytracer::LambertMaterial<double> Lambert1(colour);
 
-			raytracer::Plane<double> plane(&sgMat1, a, n);
+			raytracer::Plane<double> plane(&Lambert1, a, n);
 
 			raytracer::World<double> world( backgroundColour, ambientlight);
 			world.addGeometry(plane);
-			world.addLight(pLight);
+			world.addLight(PointLight);
 
-			raytracer::Colour<double> colour2(1.0,1.0,0.0);
-			raytracer::LambertMaterial<double> lm (colour2);
+
+
+			raytracer::Colour<double> diffuseColour(1.0,1.0,0.0);
+			raytracer::Colour<double> specularColour(0.5, 0.5, 0.5);
+
+			raytracer::PhongMaterial<double> Phong1 (diffuseColour, specularColour, 4);
+
+
+			raytracer::LambertMaterial<double> lm (diffuseColour);
 			double r = 1;
-			raytracer::math::ColumnVector< double, 3> c( 0, 0, -3);
-			raytracer::Sphere<double> sphere(&lm, c, r);
+			raytracer::math::ColumnVector< double, 3> c( 0, 1, -3);
+			raytracer::Sphere<double> sphere(&Phong1, c, r);
 			world.addGeometry(sphere);
 
 			raytracer::Colour<double> colour3(1.0,0.0,1.0);
-			raytracer::SingleColourMaterial<double> sgMat3(colour3);
+			raytracer::LambertMaterial<double> Lambert2(colour3);
 			raytracer::math::ColumnVector< double, 3> One( 0, 0, -3);
 			raytracer::math::ColumnVector< double, 3> Two( 0, 2, -3);
 			raytracer::math::ColumnVector< double, 3> Three( 1, 1, -3);
+			raytracer::math::ColumnVector< double, 3> nT( 0, 0, 1);
 
 
-
-			raytracer::Triangle<double> triangle ( &sgMat3,One,Two,Three);
-			world.addGeometry(triangle);
+			raytracer::Triangle<double> triangle ( &Lambert2,One,Two,Three, nT, nT, nT);
+			//world.addGeometry(triangle);
 
 			raytracer::Colour<double> colour4(0.5, 0.5, 0.5);
-			raytracer::SingleColourMaterial<double> sgMat4(colour4);
+			raytracer::LambertMaterial<double> Lambert3(colour4);
 			raytracer::math::ColumnVector< double, 3> vectorA( -1, 0, -4);
 			raytracer::math::ColumnVector< double, 3> VectorB( 1, 2, -3);
-			raytracer::AxisAlignedBox<double> box (&sgMat4, vectorA, VectorB);
-			world.addGeometry(box);
+			raytracer::AxisAlignedBox<double> box (&Lambert3, vectorA, VectorB);
+			//world.addGeometry(box);
 			
 
 			for ( int x = rcClient.left; x< rcClient.right; x++)

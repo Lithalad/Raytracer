@@ -87,6 +87,7 @@
     <ClInclude Include="Material.h" />
     <ClInclude Include="OrthographicCamera.h" />
     <ClInclude Include="PerspectiveCamera.h" />
+    <ClInclude Include="PhongMaterial.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="Ray.h" />
@@ -109,9 +110,10 @@
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="LambertMaterial.cpp" />
     <ClCompile Include="Light.cpp" />
-    <ClCompile Include="Materialcpp.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="OrthographicCamera.cpp" />
     <ClCompile Include="PerspectiveCamera.cpp" />
+    <ClCompile Include="PhongMaterial.cpp" />
     <ClCompile Include="Plane.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Ray.cpp" />

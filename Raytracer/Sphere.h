@@ -48,12 +48,12 @@ namespace raytracer
 				// b = d*(2*(o-c))
 				// c = (o - c) * (o - c) - r^2
 
-				auto omc = ray.GetDirection() - this->c;
+				auto omc = ray.GetOrigin() - this->c;
 				T a = ray.GetDirection().Dot(ray.GetDirection());
 				T b = ray.GetDirection().Dot( omc * 2.0 );
 				
 				T c = omc.Dot(omc) - r*r;
-				T d = b*b - 4 * a * c;
+				T d = b*b - 4.0 * a * c;
 
 				if( d < 0)
 				{
@@ -62,10 +62,10 @@ namespace raytracer
 
 				if( d == 0)
 				{
-					T t = -b / (2 * a);
+					T t = -b / (2.0 * a);
 
 
-					if ( t > 0 && (!shadeRecord.IsValid() || t < shadeRecord.GetT()))
+					if ( t > 0.001 && (!shadeRecord.IsValid() || t < shadeRecord.GetT()))
 					{
 						auto n = (ray.At(t) - this->c) / ( (ray.At(t) - this->c).GetMagnitude());
 
@@ -80,8 +80,8 @@ namespace raytracer
 				if( d > 0)
 				{
 					T t = 0;
-					T t1 = (-b + sqrt(d)) / ( 2 * a);
-					T t2 = (-b - sqrt(d)) / ( 2 * a);
+					T t1 = (-b + sqrt(d)) / ( 2.0 * a);
+					T t2 = (-b - sqrt(d)) / ( 2.0 * a);
 
 					if( t2 >= 0)
 					{
@@ -98,7 +98,7 @@ namespace raytracer
 						return;
 					}
 
-					if ( t > 0 && (!shadeRecord.IsValid() || t < shadeRecord.GetT()))
+					if ( t > 0.001 && (!shadeRecord.IsValid() || t < shadeRecord.GetT()))
 					{
 
 						auto n = (ray.At(t) - this->c) / ( (ray.At(t) - this->c).GetMagnitude());

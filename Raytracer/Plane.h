@@ -46,12 +46,13 @@ namespace raytracer
 				{
 					 T t = (a - ray.GetOrigin()).Dot(n)/ray.GetDirection().Dot(n);
 
-					 if ( t > 0 && (!shadeRecord.IsValid() || t < shadeRecord.GetT()))
+					 if ( t > 0.001 && (!shadeRecord.IsValid() || t < shadeRecord.GetT()))
 					 {
 						 shadeRecord.SetGeometry(this);
 						 shadeRecord.SetRay(&ray);
 						 shadeRecord.SetT(t);
 						 shadeRecord.SetValid(true);
+						 shadeRecord.SetN(n);
 					 }
 
 				}

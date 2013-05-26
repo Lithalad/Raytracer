@@ -3,8 +3,11 @@
 #include "..\Math\Columnvector.h"
 #include "Colour.h"
 
+
 namespace raytracer
 {
+	template<class T>
+	class World;
 
 	template <class T>
 	class Light
@@ -41,8 +44,8 @@ namespace raytracer
 				p = pValue;
 			}
 
-			virtual bool VisibleAt( const math::ColumnVector<T, 3>& p) const = 0;
-			virtual math::ColumnVector<T, 3> DirectionFrom(const math::ColumnVector<T, 3>& p) const =	0;
+			virtual bool VisibleAt( const math::ColumnVector<T, 3>& p, const World<T>* world) const = 0;
+			virtual math::ColumnVector<T, 3> DirectionFrom(const math::ColumnVector<T, 3>& p) const =0;
 	};
 
 

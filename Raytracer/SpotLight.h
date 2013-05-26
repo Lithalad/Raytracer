@@ -42,11 +42,11 @@ namespace raytracer
 				d = dValue;
 			}
 
-			virtual bool VisibleAt( const math::ColumnVector<T, 3>& p) const
+			virtual bool VisibleAt( const math::ColumnVector<T, 3>& p, const World<T>* world) const
 			{
 				math::ColumnVector<T, 3> l = p- this->GetP();
 				l = l / ( l.GetMagnitude());
-				T v = l.cross(d).GetMagnitude();
+				T v = l.cross(d / d.GetMagnitude()).GetMagnitude();
 
 				return v <= sin(angle);
 				

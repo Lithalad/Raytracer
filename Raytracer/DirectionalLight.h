@@ -29,7 +29,7 @@ namespace raytracer
 				d = dValue;
 			}
 
-			virtual bool VisibleAt( const math::ColumnVector<T, 3>& p) const
+			virtual bool VisibleAt( const math::ColumnVector<T, 3>& p, const World<T>* world) const
 			{
 				return true;
 			}

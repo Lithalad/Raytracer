@@ -16,9 +16,14 @@ namespace raytracer
 			
 		}
 
-		virtual bool VisibleAt( const math::ColumnVector<T, 3>& p) const
+		virtual bool VisibleAt( const math::ColumnVector<T, 3>& p, const World<T>* world) const
 		{
-			return true;
+			math::ColumnVector<T, 3> l = this->GetP() - p;
+			Ray<T> shadowRay (p, l);
+			ShadeRecord<T> sr;
+			world->hit(shadowRay, sr);
+
+			return (!sr.IsValid() || sr.GetT() > 1);
 		}
 
 		virtual math::ColumnVector<T, 3> DirectionFrom(const math::ColumnVector<T, 3>& p) const
