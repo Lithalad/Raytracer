@@ -14,6 +14,8 @@
 #include "PhongMaterial.h"
 #include "PointLight.h"
 #include "SpotLight.h"
+#include "Tracer.h"
+#include "ReflectiveMaterial.h"
 
 #define MAX_LOADSTRING 100
 
@@ -207,14 +209,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		
 			raytracer::math::ColumnVector< double, 3> a( 0, 0, 0);
 			raytracer::math::ColumnVector< double, 3> n( 0, 1, 0);
-			raytracer::Colour<double> colour(1.0,0.0,0.0);
+			raytracer::Colour<double> dColour(0.0,0.0,0.0);
+			raytracer::Colour<double> sColour(0.0,0.0,0.0);
+			raytracer::Colour<double> rColour(1.0,1.0,1.0);
 			raytracer::Colour<double> backgroundColour(0.3,0.3,0.3);
 			raytracer::Colour<double> ambientlight(0.0,0.0,0.0);
-			raytracer::LambertMaterial<double> Lambert1(colour);
+			raytracer::ReflectiveMaterial<double> ReflectionMaterial(dColour, sColour, rColour, 4);
 
-			raytracer::Plane<double> plane(&Lambert1, a, n);
+			raytracer::Plane<double> plane(&ReflectionMaterial, a, n);
 
-			raytracer::World<double> world( backgroundColour, ambientlight);
+			raytracer::World<double> world( backgroundColour, ambientlight, 1.003);
 			world.addGeometry(plane);
 			world.addLight(PointLight);
 
@@ -249,7 +253,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			raytracer::math::ColumnVector< double, 3> VectorB( 1, 2, -3);
 			raytracer::AxisAlignedBox<double> box (&Lambert3, vectorA, VectorB);
 			//world.addGeometry(box);
-			
+			raytracer::Tracer<double> tracer;
 
 			for ( int x = rcClient.left; x< rcClient.right; x++)
 			{
@@ -258,19 +262,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 					
 					raytracer::Ray<double> ray = cam.RayFor(x, uiHeight - y);
 
-					raytracer::ShadeRecord<double> shadeRecord;
-
-					world.hit(ray, shadeRecord);
-					
-					if (shadeRecord.IsValid())
-					{
-						SetPixel(hdc,x,y,ConvertColour(shadeRecord.GetGeomety()->GetMaterial()->ColourAt(shadeRecord, &world)));
-					}
-
-					else
-					{
-						SetPixel(hdc,x,y,ConvertColour(world.GetBackgroundColour()));
-					}
+					SetPixel(hdc,x,y,ConvertColour(tracer.Trace(ray, world)));
+				
 				}
 			}
 			EndPaint(hWnd, &ps);

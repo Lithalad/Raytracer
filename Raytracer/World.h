@@ -15,11 +15,12 @@ namespace raytracer
 			Colour<T> backgroundColour;
 			Colour<T> ambientlight;
 			std::vector< const Geometry<T>* > geometries; 
-			std::vector< const Light<T>* > lights; 
+			std::vector< const Light<T>* > lights;
+			T Eta;
 
 		public:
 
-			World ( const Colour<T>& bgColour, const Colour<T>& ambientlight) : backgroundColour (bgColour), ambientlight(ambientlight)
+			World ( const Colour<T>& bgColour, const Colour<T>& ambientlight, T Eta) : backgroundColour (bgColour), ambientlight(ambientlight), Eta ( Eta)
 			{
 			
 			}
@@ -59,6 +60,16 @@ namespace raytracer
 			void addLight( const Light<T>& light )
 			{
 				lights.push_back(&light );
+			}
+
+			const T& GetEta() const
+			{
+				return Eta;
+			}
+
+			void SetEta( const T& Eta )
+			{
+				this->Eta = Eta;
 			}
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
