@@ -21,7 +21,7 @@ namespace raytracer
 			
 		}
 		
-		virtual Colour<T> ColourAt( const ShadeRecord<T>& sr,const  World<T>* w, const Tracer<T>* tracer) const = 0;
+		virtual Colour<T> ColourAt( const ShadeRecord<T>& sr,const  World<T>* w, Tracer<T>* tracer) const = 0;
 		
 
 	};

@@ -22,7 +22,7 @@ namespace raytracer
 
 		}
 		
-		virtual Colour<T> ColourAt( const ShadeRecord<T>& sr, const World<T>* w, const Tracer<T>* tracer)	const
+		virtual Colour<T> ColourAt( const ShadeRecord<T>& sr, const World<T>* w, Tracer<T>* tracer)	const
 		{
 
 			//c = color(ambienlight + (for(lights; colour *( 0 | skalar(n * L))

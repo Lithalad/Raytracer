@@ -14,21 +14,38 @@ namespace raytracer
 	{
 	public:
 
-		Colour<T> Trace( const Ray<T> &ray, const World<T> &world)	const
+		unsigned int counter;
+
+		Tracer() : counter( 3 )
 		{
+		}
+
+		Colour<T> Trace( const Ray<T> &ray, const World<T> &world)
+		{
+			if( counter == 0 )
+			{
+				return Colour< T >( 1.0, 0.0, 0.0 );
+			}
 			raytracer::ShadeRecord<T> shadeRecord;
+			--counter;
 			world.hit(ray, shadeRecord);
 
 								
 			if (shadeRecord.IsValid())		
 			{
-				return shadeRecord.GetGeomety()->GetMaterial()->ColourAt(shadeRecord, &world, this);
+				
+				auto c = shadeRecord.GetGeomety()->GetMaterial()->ColourAt(shadeRecord, &world, this);
+				++counter;
+				return c;
+
 			}
 
 			else
 			{
+				++counter;
 				return world.GetBackgroundColour();
 			}
+			
 
 
 		}

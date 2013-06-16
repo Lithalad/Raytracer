@@ -16,6 +16,7 @@
 #include "SpotLight.h"
 #include "Tracer.h"
 #include "ReflectiveMaterial.h"
+#include "TransparentMaterial.h"
 
 #define MAX_LOADSTRING 100
 
@@ -191,8 +192,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			RECT rcClient;
 			GetClientRect(hWnd, &rcClient);
 		
-			raytracer::math::ColumnVector< double, 3> e( 8, 8, 8);
-			raytracer::math::ColumnVector< double, 3> g( -1, -1, -1);
+			raytracer::math::ColumnVector< double, 3> e( 0, 1., 0);
+			raytracer::math::ColumnVector< double, 3> g( 0, 0, -1);
 			raytracer::math::ColumnVector< double, 3> t( 0, 1, 0);
 			double Angle = 3.1415 / 8.0;
 			unsigned int uiHeight = rcClient.bottom -rcClient.top;
@@ -209,14 +210,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		
 			raytracer::math::ColumnVector< double, 3> a( 0, 0, 0);
 			raytracer::math::ColumnVector< double, 3> n( 0, 1, 0);
-			raytracer::Colour<double> dColour(0.0,0.0,0.0);
+			raytracer::Colour<double> dColour(0.0,1.0,0.0);
 			raytracer::Colour<double> sColour(0.0,0.0,0.0);
 			raytracer::Colour<double> rColour(1.0,1.0,1.0);
 			raytracer::Colour<double> backgroundColour(0.3,0.3,0.3);
 			raytracer::Colour<double> ambientlight(0.0,0.0,0.0);
-			raytracer::ReflectiveMaterial<double> ReflectionMaterial(dColour, sColour, rColour, 4);
+			//raytracer::ReflectiveMaterial<double> ReflectionMaterial(dColour, sColour, rColour, 4);
+			raytracer::LambertMaterial<double> Lam (dColour);
 
-			raytracer::Plane<double> plane(&ReflectionMaterial, a, n);
+			raytracer::Plane<double> plane(&Lam, a, n);
 
 			raytracer::World<double> world( backgroundColour, ambientlight, 1.003);
 			world.addGeometry(plane);
@@ -228,29 +230,29 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			raytracer::Colour<double> specularColour(0.5, 0.5, 0.5);
 
 			raytracer::PhongMaterial<double> Phong1 (diffuseColour, specularColour, 4);
-
+			raytracer::TransparentMaterial<double> Glass (1.5);
 
 			raytracer::LambertMaterial<double> lm (diffuseColour);
 			double r = 1;
 			raytracer::math::ColumnVector< double, 3> c( 0, 1, -3);
-			raytracer::Sphere<double> sphere(&Phong1, c, r);
+			raytracer::Sphere<double> sphere(&Glass, c, r);
 			world.addGeometry(sphere);
 
 			raytracer::Colour<double> colour3(1.0,0.0,1.0);
 			raytracer::LambertMaterial<double> Lambert2(colour3);
-			raytracer::math::ColumnVector< double, 3> One( 0, 0, -3);
-			raytracer::math::ColumnVector< double, 3> Two( 0, 2, -3);
-			raytracer::math::ColumnVector< double, 3> Three( 1, 1, -3);
+			raytracer::math::ColumnVector< double, 3> One( 0, 0, -5);
+			raytracer::math::ColumnVector< double, 3> Two( 0, 2, -5);
+			raytracer::math::ColumnVector< double, 3> Three( 1, 1, -5);
 			raytracer::math::ColumnVector< double, 3> nT( 0, 0, 1);
 
 
 			raytracer::Triangle<double> triangle ( &Lambert2,One,Two,Three, nT, nT, nT);
-			//world.addGeometry(triangle);
+			world.addGeometry(triangle);
 
 			raytracer::Colour<double> colour4(0.5, 0.5, 0.5);
 			raytracer::LambertMaterial<double> Lambert3(colour4);
-			raytracer::math::ColumnVector< double, 3> vectorA( -1, 0, -4);
-			raytracer::math::ColumnVector< double, 3> VectorB( 1, 2, -3);
+			raytracer::math::ColumnVector< double, 3> vectorA( 0, 0, -6);
+			raytracer::math::ColumnVector< double, 3> VectorB( 2, 2, -5);
 			raytracer::AxisAlignedBox<double> box (&Lambert3, vectorA, VectorB);
 			//world.addGeometry(box);
 			raytracer::Tracer<double> tracer;
@@ -261,8 +263,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				{
 					
 					raytracer::Ray<double> ray = cam.RayFor(x, uiHeight - y);
-
 					SetPixel(hdc,x,y,ConvertColour(tracer.Trace(ray, world)));
+
 				
 				}
 			}
