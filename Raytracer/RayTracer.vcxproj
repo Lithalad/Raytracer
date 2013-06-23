@@ -101,6 +101,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Tracer.h" />
+    <ClInclude Include="Transform.h" />
     <ClInclude Include="TransparentMaterial.h" />
     <ClInclude Include="Triangle.h" />
     <ClInclude Include="World.h" />
@@ -131,6 +132,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Tracer.cpp" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TransparentMaterial.cpp" />
     <ClCompile Include="Triangle.cpp" />
     <ClCompile Include="World.cpp" />

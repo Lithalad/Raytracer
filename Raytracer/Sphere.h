@@ -83,20 +83,24 @@ namespace raytracer
 					T t1 = (-b + sqrt(d)) / ( 2.0 * a);
 					T t2 = (-b - sqrt(d)) / ( 2.0 * a);
 
-					if( t2 >= 0.00001)
-					{
-						t = t2;
-					}
-
-					else if ( t1 >= 0.00001)
-					{
-						t = t1;
-					}
-
-					else 
+					if( t1 <= 0.0 && t2 <= 0.0)
 					{
 						return;
 					}
+
+					else
+					{
+						if(t2 >= 0.00001)
+						{
+							t = t2;
+						}
+
+						else if( t1 >= 0.00001)
+						{
+							t = t1;
+						} else return;
+					}
+
 
 					if ( t > 0.00001 && (!shadeRecord.IsValid() || t < shadeRecord.GetT()))
 					{

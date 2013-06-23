@@ -24,7 +24,7 @@ namespace RayTracerTest
 
 			Assert::AreEqual(a, plane.GetA());
 			Assert::AreEqual(n, plane.GetN());
-			Assert::AreEqual(colour, plane.GetColour());
+			Assert::AreEqual(colour, plane.GetMaterial());
 		}
 
 		TEST_METHOD(PlaneGetAndSetATest)

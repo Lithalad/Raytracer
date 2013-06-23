@@ -16,7 +16,7 @@ namespace raytracer
 
 		unsigned int counter;
 
-		Tracer() : counter( 3 )
+		Tracer() : counter( 20 )
 		{
 		}
 

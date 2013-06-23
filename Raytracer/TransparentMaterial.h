@@ -48,7 +48,7 @@ namespace raytracer
 			math::ColumnVector<T, 3> e = sr.GetRay()->GetDirection() * -1.0;
 			T R0 = pow(( w->GetEta() - this->GetEta()) / ( w->GetEta() + this->GetEta()), 2.0);
 
-			if(e.Dot(n) < 0)
+			if(e.Dot(n) < 0.0)
 			{
 				n = n * -1.0;
 				eta = this->GetEta() / w->GetEta();
@@ -69,7 +69,7 @@ namespace raytracer
 				T phi2 = sqrt(h); 
 
 				
-				math::ColumnVector<T, 3> t =  (sr.GetRay()->GetDirection() * eta) - (n * ( phi2 - ((eta) * phi1))); 
+				math::ColumnVector<T, 3> t =  (sr.GetRay()->GetDirection() * eta) - (n * ( phi2 - eta * phi1)); 
 			
 				T R = R0 + ( 1.0 - R0) * pow( 1.0 - phi1, 5.0);
 				T T2 = 1.0 - R;

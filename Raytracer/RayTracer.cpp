@@ -192,7 +192,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			RECT rcClient;
 			GetClientRect(hWnd, &rcClient);
 		
-			raytracer::math::ColumnVector< double, 3> e( 0, 1., 0);
+			raytracer::math::ColumnVector< double, 3> e( 0, 1, 0);
 			raytracer::math::ColumnVector< double, 3> g( 0, 0, -1);
 			raytracer::math::ColumnVector< double, 3> t( 0, 1, 0);
 			double Angle = 3.1415 / 8.0;
@@ -215,7 +215,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			raytracer::Colour<double> rColour(1.0,1.0,1.0);
 			raytracer::Colour<double> backgroundColour(0.3,0.3,0.3);
 			raytracer::Colour<double> ambientlight(0.0,0.0,0.0);
-			//raytracer::ReflectiveMaterial<double> ReflectionMaterial(dColour, sColour, rColour, 4);
+			raytracer::ReflectiveMaterial<double> ReflectionMaterial(dColour, sColour, rColour, 4);
 			raytracer::LambertMaterial<double> Lam (dColour);
 
 			raytracer::Plane<double> plane(&Lam, a, n);
@@ -230,7 +230,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			raytracer::Colour<double> specularColour(0.5, 0.5, 0.5);
 
 			raytracer::PhongMaterial<double> Phong1 (diffuseColour, specularColour, 4);
-			raytracer::TransparentMaterial<double> Glass (1.5);
+			raytracer::TransparentMaterial<double> Glass (10);
 
 			raytracer::LambertMaterial<double> lm (diffuseColour);
 			double r = 1;
