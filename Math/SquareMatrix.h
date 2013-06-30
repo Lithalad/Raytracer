@@ -13,7 +13,7 @@ namespace raytracer
 		public:
 			SquareMatrix(const T& v) : Matrix(v)
 			{
-				
+
 			}
 
 			T GetDeterminant() const
@@ -21,10 +21,10 @@ namespace raytracer
 				T det = 0;
 				for (int i = 0; i < SIZE; i++)
 				{
-					
-					
+
+
 					det += pow(- 1, i) * Get(0,i) * GetMinor(0,i).GetDeterminant();
-		
+
 				}
 				return det;
 			}
@@ -32,13 +32,13 @@ namespace raytracer
 			SquareMatrix<T, SIZE> GetInverse() const
 			{
 				Matrix< T, SIZE,SIZE*2> tempMatrix(0);
-				
+
 
 				for(int i = 0; i < SIZE;i++)
 				{
 					for(int j = 0; j < SIZE;j++)
 					{
-					
+
 						tempMatrix.Set(i,j,this->Get(i,j));
 
 						if( i ==j)
@@ -84,8 +84,8 @@ namespace raytracer
 
 				for(int i = 1; i < SIZE; i++)
 				{
-					
-		
+
+
 					tempMatrix.SetRow(i,tempMatrix.GetRow(i) / tempMatrix.Get(i,i) );
 					for(int j = i-1; j >= 0; j--)
 					{
@@ -105,7 +105,7 @@ namespace raytracer
 				{
 					for(int j = 0; j < SIZE;j++)
 					{
-						
+
 						inverseMatrix.Set(i,j,tempMatrix.Get(i,j+3));
 					}
 				}
@@ -145,7 +145,7 @@ namespace raytracer
 
 						tempMatrix.Set(ii,jj, Get(i,j));
 					}
-	
+
 				}
 
 
@@ -156,10 +156,10 @@ namespace raytracer
 		template < class T >
 		class SquareMatrix< T, 2>	:	public Matrix<T, 2, 2>
 		{
-			public:
+		public:
 			SquareMatrix(const T& v) : Matrix(v)
 			{
-				
+
 			}
 
 			T GetDeterminant() const

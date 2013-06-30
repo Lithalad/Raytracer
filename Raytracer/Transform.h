@@ -2,27 +2,66 @@
 #define __TRANSFORM_H
 #include "..\Math\SquareMatrix.h"
 #include <cmath>
+#include "Ray.h"
+#include "..\Math\ColumnVector.h"
 
 
 namespace raytracer
 {
-
-	template<class T>
-	class Transform
+	template<class T, unsigned int SIZE>
+	math::ColumnVector<T,SIZE + 1> extend(const math::ColumnVector<T,SIZE>& vec, const T& v)
 	{
-	private:
+		math::ColumnVector<T,SIZE + 1> tempVector;
 
-		math::SquareMatrix<T, 4> M;
-		math::SquareMatrix<T, 4> I;
-
-	public:
-
-		Transform()	: M (1), I (1)
+		for(int i = 0; i < SIZE; i++)
 		{
-			
+			tempVector.Set(i, vec.Get(i));
 		}
 
-		Transform<T>& Translate (const T x, const T y, const T z)
+		tempVector.Set((SIZE), v);
+
+		return tempVector;
+	}
+
+	void reduce()
+	{
+		
+	}
+
+	template<class T>																										 
+	class Transform;																														 
+
+	template< class T >																										 
+	Ray<T> operator*(const Transform<T>& lhs, const Ray<T>& rhs) 																 
+	{	
+		math::ColumnVector<T,3> tempOrigin = lhs.I * rhs.GetOrigin();																						 
+		math::ColumnVector<T,3> tempDirection = lhs.I * rhs.GetDirection();	
+
+		return Ray<T>(tempOrigin, tempDirection);
+	} 	
+
+	template< class T >																										 
+	math::ColumnVector<T,3> operator*(const Transform<T>& lhs, const math::ColumnVector<T, 3>& rhs) 																 
+	{	
+		return lhs.I.GetTransposed() * rhs;
+	} 	
+
+	template<class T>																										 
+	class Transform																											 
+	{																														 
+	private:																												 
+
+		math::SquareMatrix<T, 4> M;																							 
+		math::SquareMatrix<T, 4> I;																							 
+
+	public:																													 
+
+		Transform()	: M (1), I (1)																							 
+		{																													 
+
+		}																													 
+
+		Transform<T>& Translate (const T x, const T y, const T z)															 
 		{
 			math::SquareMatrix<T, 4> Matrix;
 			Matrix.Set(0, 3, x);
@@ -123,6 +162,8 @@ namespace raytracer
 			return *(this);
 		}
 
+		friend math::ColumnVector<T,3> operator* <> (const Transform<T>& lhs, const math::ColumnVector<T, 3>& rhs);
+		friend Ray<T> operator* <> (const Transform<T>& lhs, const Ray<T>& rhs);
 
 	};
 

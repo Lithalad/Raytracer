@@ -43,7 +43,7 @@ namespace raytracer
 		virtual Colour<T> ColourAt( const ShadeRecord<T>& sr, const World<T>* w, Tracer<T>* tracer)	const
 		{
 
-			T eta = w->GetEta() / this->GetEta();
+			T eta = this->GetEta() / w->GetEta();
 			math::ColumnVector<T, 3> n = sr.GetN();
 			math::ColumnVector<T, 3> e = sr.GetRay()->GetDirection() * -1.0;
 			T R0 = pow(( w->GetEta() - this->GetEta()) / ( w->GetEta() + this->GetEta()), 2.0);
@@ -51,14 +51,14 @@ namespace raytracer
 			if(e.Dot(n) < 0.0)
 			{
 				n = n * -1.0;
-				eta = this->GetEta() / w->GetEta();
+				eta = w->GetEta() / this->GetEta();
 				R0 = pow(( this->GetEta() - w->GetEta()) / (this->GetEta() +  w->GetEta()), 2.0);
 
 			}			
 			
 			
 			T phi1 = e.Dot(n);
-			T h = 1.0 - pow( eta, 2.0) * (1.0 - pow(phi1, 2.0));
+			T h = 1.0 -(1 / pow(eta, 2.0)) * (1.0 - pow(phi1, 2.0));
 			math::ColumnVector<T, 3> r = sr.GetRay()->GetDirection() + 2.0 * phi1 *n;
 			math::ColumnVector< T, 3> p = sr.GetRay()->At(sr.GetT());
 
@@ -69,7 +69,8 @@ namespace raytracer
 				T phi2 = sqrt(h); 
 
 				
-				math::ColumnVector<T, 3> t =  (sr.GetRay()->GetDirection() * eta) - (n * ( phi2 - eta * phi1)); 
+				//math::ColumnVector<T, 3> t =  (sr.GetRay()->GetDirection() * eta) - (n * ( phi2 - eta * phi1));
+				math::ColumnVector<T, 3> t =  ((1 / eta) * sr.GetRay()->GetDirection()) - (n * (phi2 - ((1 / eta) * phi1)));
 			
 				T R = R0 + ( 1.0 - R0) * pow( 1.0 - phi1, 5.0);
 				T T2 = 1.0 - R;

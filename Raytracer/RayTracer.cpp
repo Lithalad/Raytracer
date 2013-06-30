@@ -17,6 +17,7 @@
 #include "Tracer.h"
 #include "ReflectiveMaterial.h"
 #include "TransparentMaterial.h"
+#include "Node.h"
 
 #define MAX_LOADSTRING 100
 
@@ -230,7 +231,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			raytracer::Colour<double> specularColour(0.5, 0.5, 0.5);
 
 			raytracer::PhongMaterial<double> Phong1 (diffuseColour, specularColour, 4);
-			raytracer::TransparentMaterial<double> Glass (10);
+			raytracer::TransparentMaterial<double> Glass (1.1);
 
 			raytracer::LambertMaterial<double> lm (diffuseColour);
 			double r = 1;
@@ -240,9 +241,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			raytracer::Colour<double> colour3(1.0,0.0,1.0);
 			raytracer::LambertMaterial<double> Lambert2(colour3);
-			raytracer::math::ColumnVector< double, 3> One( 0, 0, -5);
-			raytracer::math::ColumnVector< double, 3> Two( 0, 2, -5);
-			raytracer::math::ColumnVector< double, 3> Three( 1, 1, -5);
+			raytracer::math::ColumnVector< double, 3> One( 0, 0, -10);
+			raytracer::math::ColumnVector< double, 3> Two( 0, 2, -10);
+			raytracer::math::ColumnVector< double, 3> Three( 1, 1, -10);
 			raytracer::math::ColumnVector< double, 3> nT( 0, 0, 1);
 
 
@@ -256,6 +257,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			raytracer::AxisAlignedBox<double> box (&Lambert3, vectorA, VectorB);
 			//world.addGeometry(box);
 			raytracer::Tracer<double> tracer;
+
+			raytracer::Transform<double> transformation;
+			raytracer::Node<double> node (transformation);
 
 			for ( int x = rcClient.left; x< rcClient.right; x++)
 			{
