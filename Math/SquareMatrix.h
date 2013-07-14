@@ -8,6 +8,26 @@ namespace raytracer
 	namespace math
 	{
 		template< class T, unsigned int SIZE>
+		class SquareMatrix;
+
+		template< class T, unsigned int SIZE>
+		SquareMatrix<T,SIZE> operator*(const SquareMatrix<T,SIZE>& lhs, const SquareMatrix<T,SIZE>& rhs) 
+		{
+			SquareMatrix<T,SIZE> tempMatrix(0);
+			for(unsigned int i = 0; i < SIZE; i++)
+			{
+				for(unsigned int j = 0; j < SIZE; j++)
+				{
+					for( unsigned int k = 0; k < SIZE; k++)
+					{
+						tempMatrix.Set(i,j, tempMatrix.Get(i,j) + lhs.Get(i,k) * rhs.Get(k,j));
+					}
+				}
+			}
+			return tempMatrix;
+		}
+
+		template< class T, unsigned int SIZE>
 		class SquareMatrix	:	public Matrix<T, SIZE, SIZE>
 		{
 		public:

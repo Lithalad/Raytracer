@@ -10,7 +10,20 @@ namespace raytracer
 
 		template< class T, unsigned int SIZE> class ColumnVector;//	:	public Matrix<T, SIZE, 1>;
 
-	
+		template< class T, unsigned int ROWS, unsigned int COLUMNS>
+		ColumnVector<T, ROWS> operator*(const Matrix<T,ROWS,COLUMNS>& lhs, const ColumnVector<T, ROWS>& rhs) 
+		{
+			ColumnVector<T, ROWS> tempVector;
+			for(unsigned int i = 0; i < ROWS; i++)
+			{
+				for( unsigned int k = 0; k < COLUMNS; k++)
+				{
+					tempVector.Set(i, tempVector.Get(i) + lhs.Get(i,k) * rhs.Get(k));
+				}
+				
+			}
+			return tempVector;
+		}
 
 		template< class T, unsigned int SIZE >
 		ColumnVector<T,SIZE> operator*(const T lhs, const ColumnVector<T,SIZE>& rhs) 
@@ -85,12 +98,12 @@ namespace raytracer
 
 			const T& Get ( const unsigned int row ) const
 			{
-				return this->Get(row,0);
+				return Matrix<T, SIZE, 1>::Get(row,0);
 			}
 
 			void Set (const unsigned int row, const T& v )
 			{
-				this->Set(row,0,v);
+				Matrix<T, SIZE, 1>::Set(row,0,v);
 			}
 
 			T GetMagnitude() const
@@ -136,12 +149,12 @@ namespace raytracer
 
 			const T& Get ( const unsigned int row ) const
 			{
-				return Matrix::Get(row,0);
+				return Matrix<T, 3, 1>::Get(row,0);
 			}
 
 			void Set (const unsigned int row, const T& v )
 			{
-				Matrix::Set(row,0,v);
+				Matrix<T, 3, 1>::Set(row,0,v);
 			}
 
 			T GetMagnitude(  ) const

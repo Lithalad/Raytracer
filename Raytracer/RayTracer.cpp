@@ -227,17 +227,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 
 
-			raytracer::Colour<double> diffuseColour(1.0,1.0,0.0);
+			raytracer::Colour<double> diffuseColour(1.0,0.0,0.0);
 			raytracer::Colour<double> specularColour(0.5, 0.5, 0.5);
 
 			raytracer::PhongMaterial<double> Phong1 (diffuseColour, specularColour, 4);
-			raytracer::TransparentMaterial<double> Glass (1.1);
+			raytracer::TransparentMaterial<double> Glass (1.5);
 
 			raytracer::LambertMaterial<double> lm (diffuseColour);
 			double r = 1;
 			raytracer::math::ColumnVector< double, 3> c( 0, 1, -3);
 			raytracer::Sphere<double> sphere(&Glass, c, r);
-			world.addGeometry(sphere);
+			//world.addGeometry(sphere);
 
 			raytracer::Colour<double> colour3(1.0,0.0,1.0);
 			raytracer::LambertMaterial<double> Lambert2(colour3);
@@ -259,7 +259,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			raytracer::Tracer<double> tracer;
 
 			raytracer::Transform<double> transformation;
+			transformation.Scale(1.5,1,1);
 			raytracer::Node<double> node (transformation);
+			node.addGeometry(sphere);
+			world.addGeometry(node);
 
 			for ( int x = rcClient.left; x< rcClient.right; x++)
 			{

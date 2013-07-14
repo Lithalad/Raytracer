@@ -23,9 +23,17 @@ namespace raytracer
 		return tempVector;
 	}
 
-	void reduce()
+	template<class T, unsigned int SIZE>
+	math::ColumnVector<T,SIZE - 1> reduce(const math::ColumnVector<T,SIZE>& vec)
 	{
-		
+		math::ColumnVector<T,SIZE - 1> tempVector;
+
+		for(int i = 0; i < SIZE - 1; i++)
+		{
+			tempVector.Set(i, vec.Get(i));
+		}
+
+		return tempVector;
 	}
 
 	template<class T>																										 
@@ -34,8 +42,8 @@ namespace raytracer
 	template< class T >																										 
 	Ray<T> operator*(const Transform<T>& lhs, const Ray<T>& rhs) 																 
 	{	
-		math::ColumnVector<T,3> tempOrigin = lhs.I * rhs.GetOrigin();																						 
-		math::ColumnVector<T,3> tempDirection = lhs.I * rhs.GetDirection();	
+		math::ColumnVector<T,3> tempOrigin = reduce<T,4>(lhs.I * extend<T,3>(rhs.GetOrigin(), 1));
+		math::ColumnVector<T,3> tempDirection = reduce<T,4>(lhs.I * extend<T,3>(rhs.GetDirection(), 0));
 
 		return Ray<T>(tempOrigin, tempDirection);
 	} 	
@@ -43,8 +51,9 @@ namespace raytracer
 	template< class T >																										 
 	math::ColumnVector<T,3> operator*(const Transform<T>& lhs, const math::ColumnVector<T, 3>& rhs) 																 
 	{	
-		return lhs.I.GetTransposed() * rhs;
-	} 	
+		math::ColumnVector<T,3> tempVector = reduce<T,4>(lhs.I.GetTransposed() * extend<T,3>(rhs, 0));
+		return tempVector / tempVector.GetMagnitude();
+	}
 
 	template<class T>																										 
 	class Transform																											 
@@ -63,14 +72,14 @@ namespace raytracer
 
 		Transform<T>& Translate (const T x, const T y, const T z)															 
 		{
-			math::SquareMatrix<T, 4> Matrix;
+			math::SquareMatrix<T, 4> Matrix(1);
 			Matrix.Set(0, 3, x);
 			Matrix.Set(1, 3, y);
 			Matrix.Set(2, 3, z);
 
 			M = M * Matrix;
 
-			math::SquareMatrix<T, 4> Inverse;
+			math::SquareMatrix<T, 4> Inverse(1);
 			Inverse.Set(0, 3, -x);
 			Inverse.Set(1, 3, -y);
 			Inverse.Set(2, 3, -z);
@@ -82,14 +91,14 @@ namespace raytracer
 
 		Transform<T>& Scale (const T x, const T y, const T z)
 		{
-			math::SquareMatrix<T, 4> Matrix;
+			math::SquareMatrix<T, 4> Matrix(1);
 			Matrix.Set(0, 0, x);
 			Matrix.Set(1, 1, y);
 			Matrix.Set(2, 2, z);
 
 			M = M * Matrix;
 
-			math::SquareMatrix<T, 4> Inverse;
+			math::SquareMatrix<T, 4> Inverse(1);
 			Inverse.Set(0, 0, 1/x);
 			Inverse.Set(1, 1, 1/y);
 			Inverse.Set(2, 2, 1/z);
@@ -101,7 +110,7 @@ namespace raytracer
 
 		Transform<T>& RotationX (const T x)
 		{
-			math::SquareMatrix<T, 4> Matrix;
+			math::SquareMatrix<T, 4> Matrix(1);
 			Matrix.Set(1, 1, cos(x));
 			Matrix.Set(1, 2, -sin(x));
 			Matrix.Set(2, 1, sin(x));
@@ -109,7 +118,7 @@ namespace raytracer
 
 			M = M * Matrix;
 
-			math::SquareMatrix<T, 4> Inverse;
+			math::SquareMatrix<T, 4> Inverse(1);
 			Inverse.Set(1, 1, cos(x));
 			Inverse.Set(1, 2, sin(x));
 			Inverse.Set(2, 1, -sin(x));
@@ -122,7 +131,7 @@ namespace raytracer
 
 		Transform<T>& RotationY (const T y)
 		{
-			math::SquareMatrix<T, 4> Matrix;
+			math::SquareMatrix<T, 4> Matrix(1);
 			Matrix.Set(0, 0, cos(y));
 			Matrix.Set(0, 2, sin(y));
 			Matrix.Set(2, 0, -sin(y));
@@ -130,7 +139,7 @@ namespace raytracer
 
 			M = M * Matrix;
 
-			math::SquareMatrix<T, 4> Inverse;
+			math::SquareMatrix<T, 4> Inverse(1);
 			Inverse.Set(1, 1, cos(y));
 			Inverse.Set(0, 2, -sin(y));
 			Inverse.Set(2, 0, sin(y));
@@ -143,7 +152,7 @@ namespace raytracer
 
 		Transform<T>& RotationZ (const T z)
 		{
-			math::SquareMatrix<T, 4> Matrix;
+			math::SquareMatrix<T, 4> Matrix(1);
 			Matrix.Set(0, 0, cos(z));
 			Matrix.Set(0, 1, -sin(z));
 			Matrix.Set(1, 0, sin(z));
@@ -151,7 +160,7 @@ namespace raytracer
 
 			M = M * Matrix;
 
-			math::SquareMatrix<T, 4> Inverse;
+			math::SquareMatrix<T, 4> Inverse(1);
 			Inverse.Set(0, 0, cos(z));
 			Inverse.Set(0, 1, sin(z));
 			Inverse.Set(1, 0, -sin(z));
