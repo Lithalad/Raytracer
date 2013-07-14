@@ -208,8 +208,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			//raytracer::SpotLight<double> SpotLight(lightColour, e, g, 3.1415/16);
 			raytracer::PointLight<double> PointLight(lightColour, pl);
 
-		
-			raytracer::math::ColumnVector< double, 3> a( 0, 0, 0);
 			raytracer::math::ColumnVector< double, 3> n( 0, 1, 0);
 			raytracer::Colour<double> dColour(0.0,1.0,0.0);
 			raytracer::Colour<double> sColour(0.0,0.0,0.0);
@@ -219,7 +217,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			raytracer::ReflectiveMaterial<double> ReflectionMaterial(dColour, sColour, rColour, 4);
 			raytracer::LambertMaterial<double> Lam (dColour);
 
-			raytracer::Plane<double> plane(&Lam, a, n);
+			raytracer::Plane<double> plane(&Lam);
 
 			raytracer::World<double> world( backgroundColour, ambientlight, 1.003);
 			world.addGeometry(plane);
@@ -234,9 +232,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			raytracer::TransparentMaterial<double> Glass (1.5);
 
 			raytracer::LambertMaterial<double> lm (diffuseColour);
-			double r = 1;
-			raytracer::math::ColumnVector< double, 3> c( 0, 1, -3);
-			raytracer::Sphere<double> sphere(&Glass, c, r);
+
+			raytracer::Sphere<double> sphere(&Glass);
 			//world.addGeometry(sphere);
 
 			raytracer::Colour<double> colour3(1.0,0.0,1.0);
@@ -260,6 +257,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 			raytracer::Transform<double> transformation;
 			transformation.Scale(1.5,1,1);
+			transformation.Translate(0, 1, -3);
 			raytracer::Node<double> node (transformation);
 			node.addGeometry(sphere);
 			world.addGeometry(node);

@@ -4,6 +4,7 @@
 #include "Plane.h"
 #include <vector>
 #include <iostream>
+#include "Node.h"
 
 namespace raytracer
 {
@@ -12,25 +13,26 @@ namespace raytracer
 	{
 		private:
 
-			Plane<T> Left;
-			Plane<T> Right;
-			Plane<T> Top;
-			Plane<T> Bottom;
-			Plane<T> Near;
-			Plane<T> Far;
+			Node<T> Left;
+			Node<T> Right;
+			Node<T> Top;
+			Node<T> Bottom;
+			Node<T> Near;
+			Node<T> Far;
 			math::ColumnVector< T, 3> a;
 			math::ColumnVector< T, 3> b;
 			
 
 		public:
 
-			AxisAlignedBox(const Material<T>* mat,const math::ColumnVector< T, 3>& a, const math::ColumnVector< T, 3>& b)	:	Geometry (mat), a (a), b (b), 
-				Left(mat, a, math::ColumnVector< T, 3>( -1, 0, 0) ), 
-				Right(mat, b, math::ColumnVector< T, 3>( 1, 0, 0) ), 
-				Top(mat, b, math::ColumnVector< T, 3>( 0, 1, 0) ), 
-				Bottom(mat, a, math::ColumnVector< T, 3>( 0, -1, 0) ), 
-				Near(mat, b, math::ColumnVector< T, 3>( 0, 0, 1) ), 
-				Far(mat, a, math::ColumnVector< T, 3>( 0, 0, -1) )
+			AxisAlignedBox(const Material<T>* mat,const math::ColumnVector< T, 3>& a, const math::ColumnVector< T, 3>& b)	:	Geometry (mat), a (-0.5, -0.5, -0.5), b (0.5, 0.5, 0.5), 
+
+				Left(Transform<T>().Translate(a.X(), a.Y(), a.Z())),		// a
+				Right(Transform<T>().Translate(b.X(), b.Y(), b.Z())),		// b
+				Top(Transform<T>().Translate(b.X(), b.Y(), b.Z())),		// b
+				Bottom(Transform<T>().Translate(a.X(), a.Y(), a.Z())),	// a
+				Near(Transform<T>().Translate(b.X(), b.Y(), b.Z())),		// b
+				Far(Transform<T>().Translate(a.X(), a.Y(), a.Z()))		// a
 			{
 				
 			}
@@ -64,8 +66,8 @@ namespace raytracer
 			virtual void hit( const Ray< T >& ray, ShadeRecord<T>& shadeRecord ) const
 			{
 				//t = ((a-o)*n)/(d*n);
-				std::vector<const Plane<T>*> planes;
-				std::vector<const Plane<T>*> visiblePlanes;
+				std::vector<const Node<T>*> planes;
+				std::vector<const Node<T>*> visiblePlanes;
 
 				planes.push_back(&Left);
 				planes.push_back(&Right);
@@ -74,13 +76,13 @@ namespace raytracer
 				planes.push_back(&Near);
 				planes.push_back(&Far);
 
-				for (std::vector< const Plane<T>*>::const_iterator it = planes.cbegin(); it != planes.cend(); ++it)
+				for (std::vector< const Node<T>*>::const_iterator it = planes.cbegin(); it != planes.cend(); ++it)
 				{
 
-					if((ray.GetOrigin() - (*it)->GetA()).Dot((*it)->GetN()) > 0)
-					{
-						visiblePlanes.push_back((*it));
-					}
+					//if((ray.GetOrigin() - (*it)->GetA()).Dot((*it)->GetN()) > 0)
+					//{
+					//	visiblePlanes.push_back((*it));
+					//}
 
 				}
 
@@ -89,7 +91,7 @@ namespace raytracer
 				T biggestT = 0;
 				math::ColumnVector< T, 3> n;
 
-				for (std::vector< const Plane<T>*>::const_iterator it = visiblePlanes.cbegin(); it != visiblePlanes.cend(); ++it)
+				for (std::vector< const Node<T>*>::const_iterator it = visiblePlanes.cbegin(); it != visiblePlanes.cend(); ++it)
 				{
 					ShadeRecord<T> shade;
 
@@ -98,7 +100,7 @@ namespace raytracer
 					if( shade.GetT() > biggestT)
 					{
 						biggestT = shade.GetT();
-						n = (*it)->GetN();
+						//n = (*it)->GetN();
 					}
 				}
 

@@ -14,29 +14,9 @@ namespace raytracer
 
 		public:
 
-			Sphere(const Material<T>* mat,const math::ColumnVector< T, 3>& c, const T& r)	:	Geometry (mat), r (r), c (c)
+			Sphere(const Material<T>* mat)	:	Geometry (mat), r (1.0), c (0, 0, 0)
 			{
 				
-			}
-
-			const math::ColumnVector< T, 3>& GetC() const
-			{
-				return c;
-			}
-
-			void SetC(const math::ColumnVector< T, 3>& cValue)
-			{
-				c = cValue;
-			}
-
-			const T& GetR() const
-			{
-				return r;
-			}
-
-			void SetR(const T& radius)
-			{
-				r = radius;
 			}
 
 			virtual void hit( const Ray< T >& ray, ShadeRecord<T>& shadeRecord ) const
