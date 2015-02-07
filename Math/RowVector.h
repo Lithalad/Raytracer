@@ -1,3 +1,7 @@
+///implementaion of the RowVector class
+///includes overloding of operators,  get and set for rows and columns, 
+///function for calculating the magnitude, dot produckt and cross product
+///
 #ifndef __ROWVECTOR_H
 #define __ROWVECTOR_H
 #include "Matrix.h"

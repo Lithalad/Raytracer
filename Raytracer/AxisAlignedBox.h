@@ -6,6 +6,8 @@
 #include <iostream>
 #include "Node.h"
 
+#define PI 3.14159
+
 namespace raytracer
 {
 	template<class T> 
@@ -27,12 +29,13 @@ namespace raytracer
 
 			AxisAlignedBox(const Material<T>* mat,const math::ColumnVector< T, 3>& a, const math::ColumnVector< T, 3>& b)	:	Geometry (mat), a (-0.5, -0.5, -0.5), b (0.5, 0.5, 0.5), 
 
-				Left(Transform<T>().Translate(a.X(), a.Y(), a.Z())),		// a
-				Right(Transform<T>().Translate(b.X(), b.Y(), b.Z())),		// b
+				Left(Transform<T>().Translate(a.X(), a.Y(), a.Z()).RotationZ(PI / 2.0)),		// a
+				Right(Transform<T>().Translate(b.X(), b.Y(), b.Z()).RotationZ(PI / 2.0 * -1)),		// b
 				Top(Transform<T>().Translate(b.X(), b.Y(), b.Z())),		// b
-				Bottom(Transform<T>().Translate(a.X(), a.Y(), a.Z())),	// a
-				Near(Transform<T>().Translate(b.X(), b.Y(), b.Z())),		// b
-				Far(Transform<T>().Translate(a.X(), a.Y(), a.Z()))		// a
+				Bottom(Transform<T>().Translate(a.X(), a.Y(), a.Z()).RotationZ(PI)),	// a
+				Near(Transform<T>().Translate(b.X(), b.Y(), b.Z()).RotationX(PI / 2.0)),		// b
+				Far(Transform<T>().Translate(a.X(), a.Y(), a.Z()).RotationX(PI / 2.0 * -1))		// a
+
 			{
 				
 			}
@@ -65,35 +68,12 @@ namespace raytracer
 
 			virtual void hit( const Ray< T >& ray, ShadeRecord<T>& shadeRecord ) const
 			{
-				//t = ((a-o)*n)/(d*n);
-				std::vector<const Node<T>*> planes;
-				std::vector<const Node<T>*> visiblePlanes;
 
-				planes.push_back(&Left);
-				planes.push_back(&Right);
-				planes.push_back(&Bottom);
-				planes.push_back(&Top);
-				planes.push_back(&Near);
-				planes.push_back(&Far);
-
-				for (std::vector< const Node<T>*>::const_iterator it = planes.cbegin(); it != planes.cend(); ++it)
-				{
-
-					//if((ray.GetOrigin() - (*it)->GetA()).Dot((*it)->GetN()) > 0)
-					//{
-					//	visiblePlanes.push_back((*it));
-					//}
-
-				}
-
-				int size = visiblePlanes.size();
-
-				T biggestT = 0;
-				math::ColumnVector< T, 3> n;
+				ShadeRecord<T> shade;
 
 				for (std::vector< const Node<T>*>::const_iterator it = visiblePlanes.cbegin(); it != visiblePlanes.cend(); ++it)
 				{
-					ShadeRecord<T> shade;
+					
 
 					(*it)->hit( ray, shade);
 					

@@ -193,8 +193,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			RECT rcClient;
 			GetClientRect(hWnd, &rcClient);
 		
-			raytracer::math::ColumnVector< double, 3> e( 0, 1, 0);
-			raytracer::math::ColumnVector< double, 3> g( 0, 0, -1);
+			raytracer::math::ColumnVector< double, 3> e( 8, 8, 0);
+			raytracer::math::ColumnVector< double, 3> g( -1, -1, -1);
 			raytracer::math::ColumnVector< double, 3> t( 0, 1, 0);
 			double Angle = 3.1415 / 8.0;
 			unsigned int uiHeight = rcClient.bottom -rcClient.top;
@@ -251,7 +251,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			raytracer::LambertMaterial<double> Lambert3(colour4);
 			raytracer::math::ColumnVector< double, 3> vectorA( 0, 0, -6);
 			raytracer::math::ColumnVector< double, 3> VectorB( 2, 2, -5);
-			raytracer::AxisAlignedBox<double> box (&Lambert3, vectorA, VectorB);
+			//raytracer::AxisAlignedBox<double> box (&Lambert3, vectorA, VectorB);
 			//world.addGeometry(box);
 			raytracer::Tracer<double> tracer;
 

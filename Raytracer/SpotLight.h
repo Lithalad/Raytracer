@@ -1,3 +1,5 @@
+///implementaion of the SpottLight subclass
+///and functions for seting direction and cheking if visible at a certain point
 #ifndef __SPOTLIGHT_H
 #define __SPOTLIGHT_H
 #include "Light.h"

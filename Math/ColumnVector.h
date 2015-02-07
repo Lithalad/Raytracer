@@ -1,3 +1,7 @@
+///implementaion of the ColumnVector class
+///includes overloding of operators,  get and set for rows and columns, 
+///function for calculating the magnitude, dot produckt and cross product
+///
 #ifndef __COLUMNVECTOR_H
 #define __COLUMNVECTOR_H
 #include "Matrix.h"

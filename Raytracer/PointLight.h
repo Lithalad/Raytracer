@@ -1,3 +1,5 @@
+///implementaion of the PointLight subclass
+///and functions for seting direction and cheking if visible at a certain point
 #ifndef __POINTLIGHT_H
 #define __POINTLIGHT_H
 #include "Light.h"

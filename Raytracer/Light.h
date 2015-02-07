@@ -1,3 +1,8 @@
+///implementaion of the Light class
+///basic ligth class other lights derive from
+///inludes get and set for colour, point of origin 
+///and a virtual function for seting direction and cheking if visible at a certain point
+///
 #ifndef __LIGHT_H
 #define __LIGHT_H
 #include "..\Math\Columnvector.h"

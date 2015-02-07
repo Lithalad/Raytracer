@@ -1,3 +1,6 @@
+///implementaion of the SquareMatrix subclass
+///includes overloding of operators, get minor, function for calculating the inverse
+///
 #ifndef __SQUAREMATRIX_H
 #define __SQUAREMATRIX_H
 #include "Matrix.h"
